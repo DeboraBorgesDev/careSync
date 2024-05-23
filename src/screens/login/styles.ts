@@ -40,7 +40,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center'
         },
         logo: {
-            paddingTop: theme.spacing(8),
+            paddingTop: theme.spacing(5),
             display: 'flex',
             justifyContent: 'center'
         }

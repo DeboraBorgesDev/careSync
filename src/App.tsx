@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
-import LoginPage from './screens/login';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes';
 
 function App() {
   return (
-    <LoginPage/>
+    <RouterProvider router={router} />
   );
 }
 

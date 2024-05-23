@@ -18,7 +18,7 @@ const LoginPage = () => {
                             <Grid item className={classes.img}>
                                 <img src={loginImage} alt="teste" style={{ width: '75%' }} />
                             </Grid>
-                            <Grid item className={classes.img}>
+                            <Grid item className={classes.logo}>
                                 <img src={logo} alt="logo"  />
                             </Grid>
                         </Grid>
