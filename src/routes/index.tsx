@@ -1,23 +1,17 @@
-import React from 'react';
-import {  createBrowserRouter } from 'react-router-dom';
-import LoginPage from '../screens/login';
+
+import { useRoutes } from 'react-router-dom';
+import { commonRoutes } from './commonRoutes';
+import { privateRoutes } from './privateRoutes';
+
+const Routes = () => {
 
 
-export const router = createBrowserRouter([
-	// {
-	// 	path: "/",
-	// 	element: <HomePage />,
-	// },
-	// {
-	// 	path: "/room/:roomId",
-	// 	element: <RoomPage />,
-	// },
-	{
-		path: "/login",
-		element: <LoginPage />,
-	},
-	{
-		path: "*",
-		element: <LoginPage />,
-	},
-])
+  const routes = [...privateRoutes, ...commonRoutes];
+
+  const element = useRoutes(routes);
+
+
+  return <>{element}</>;
+};
+
+export default Routes;

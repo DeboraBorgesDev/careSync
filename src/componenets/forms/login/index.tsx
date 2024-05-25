@@ -1,11 +1,15 @@
 import React from 'react';
 import { Button, Card, Grid, TextField, Typography } from '@mui/material';
 import { useStyles } from './styles'; 
+import { useNavigate } from 'react-router-dom'
+;
 const LoginForm = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    navigate('/')
   
   };
 
