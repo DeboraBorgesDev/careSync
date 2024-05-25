@@ -5,10 +5,10 @@ import {
   Search,
   LocalHospital ,
   Add ,
-  Accessibility ,
-  Favorite 
+  Favorite, 
+  Group
 } from '@material-ui/icons';
-import { FollowTheSigns } from '@mui/icons-material';
+import {  MonitorHeart } from '@mui/icons-material';
 import ResponsiveDrawer from '../Drawer';
 
 
@@ -58,12 +58,12 @@ const HomeDrawer: React.FC = () => {
         {
           label: 'Nova internação',
           link: '/internacoes/nova',
-          icon: <Accessibility />,
+          icon: <Add />,
         },
         {
           label: 'Acompanhar paciente',
           link: '/internacoes/acompanhar',
-          icon: <FollowTheSigns />,
+          icon: <MonitorHeart />,
         },
       ],
     },
@@ -71,6 +71,11 @@ const HomeDrawer: React.FC = () => {
       label: 'Registrar Sinais Vitais',
       link: '/registrar-sinais-vitais',
       icon: <Favorite />,
+    },
+    {
+      label: 'Usuários',
+      link: '/usuario',
+      icon: <Group />,
     },
   ];
 
