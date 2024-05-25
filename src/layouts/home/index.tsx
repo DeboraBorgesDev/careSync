@@ -1,7 +1,7 @@
 import HeaderTemplate from '../../componenets/header';
-import { Toolbar } from '@mui/material';
 import { useStyles } from './styles';
 import { Outlet } from 'react-router-dom';
+import HomeDrawer from '../../componenets/HomeDrawer';
 
   
   const HomeLayout = () => {
@@ -9,8 +9,8 @@ import { Outlet } from 'react-router-dom';
 
     return (
         <div className={classes.root}>
-          <HeaderTemplate />
-          <Toolbar />
+          <HeaderTemplate/>
+          <HomeDrawer />
           <Outlet/>
         </div>
     );

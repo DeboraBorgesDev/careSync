@@ -15,24 +15,20 @@ const useStyles = makeStyles((theme: Theme) =>
       boxShadow:
         '0 4px 18px 0px rgba(0, 0, 0, 0.12), 0 7px 10px -5px rgba(0, 0, 0, 0.15)',
       transition: 'padding-top 150ms ease 0s',
-      alignItems: 'center',
       flexFlow: 'row nowrap',
       justifyContent: 'flex-start',
       position: 'relative',
       zIndex: theme.zIndex.drawer + 1,
-      ...theme.mixins.toolbar,
     },
     absolute: {
       position: 'absolute',
+      zIndex: theme.zIndex.drawer + 1,
     },
     fixed: {
       position: 'fixed',
     },
     toolbar: {
       maxHeight: '50px',
-      flex: '1',
-      alignItems: 'center',
-      justifyContent: 'space-between',
       display: 'flex',
       flexWrap: 'nowrap',
     },
@@ -50,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
     logo: {
       maxWidth: '100%',
       maxHeight: '100%',
+      marginLeft: '-110px',
     },
     appResponsive: {
       margin: '20px 10px',
@@ -97,7 +94,6 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: 'all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)',
     },
     rightLinks: {
-      // Adicionei a classe rightLinks para uso nos links de navegação
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
