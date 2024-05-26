@@ -22,6 +22,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.up('md')]: {
       paddingLeft: '240px',
     },
+    marginTop: theme.spacing(8)
   },
   content: {
     display: 'flex',

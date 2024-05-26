@@ -11,14 +11,14 @@ const theme = createTheme({
     },
     secondary: {
       light: '#6AC1F7',  // Light complementary color
-      main: '#339FD1',  // Main complementary color
+      main: '#19E1AF',  // Main complementary color
       dark: '#2878A0',  // Dark complementary color
       contrastText: '#FFFFFF',  // Text color to contrast with secondary colors
     },
     //@ts-ignore
     tertiary: {
       light: '#FFB3C7',  // Light contrasting color
-      main: '#FF7F99',  // Main contrasting color
+      main: '#19E1AF',  // Main contrasting color
     },
     grey: {
       50: '#fafafa',
