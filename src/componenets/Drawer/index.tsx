@@ -12,7 +12,7 @@ import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import useStyles from './styles';
 import { Hidden, Typography } from '@mui/material';
-
+import logo from '../../media/logo/Group 1.png';
 
 interface NestedItem {
   label: string;
@@ -41,7 +41,6 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ items }) => {
     <Link role="button" {...linkProps} ref={ref} />
   ));
 
-
   const itemDrawer = classNames({
     [classes.borderColor]: false,
   });
@@ -61,17 +60,22 @@ const ResponsiveDrawer: React.FC<ResponsiveDrawerProps> = ({ items }) => {
 
   return (
     <nav className={classes.drawer} aria-label="drawer">
-       <Drawer
+      <Drawer
         classes={{
           paper: classes.drawerPaper,
         }}
         variant="permanent"
         open
       >
-       
-        <div className={classes.toolbar} />
+        <div>
+          <img
+            src={logo}
+            className={classes.logo}
+            alt="Logo"
+          />
+        </div>
         <List disablePadding>
-        <Typography className={classes.menuTitle}>MENU</Typography>
+          <Typography className={classes.menuTitle}>MENU</Typography>
           {items.map((item) => (
             <div key={item.label}>
               <ListItem

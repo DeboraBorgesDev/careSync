@@ -1,4 +1,3 @@
-import HeaderTemplate from '../../componenets/header';
 import { useStyles } from './styles';
 import { Outlet } from 'react-router-dom';
 import HomeDrawer from '../../componenets/HomeDrawer';
@@ -11,7 +10,6 @@ import CircularLoader from '../../componenets/CircularLoader';
 
     return (
         <div className={classes.root}>
-          <HeaderTemplate/>
           <HomeDrawer />
           <main className={classes.main}>
                 <div className={classes.content}>

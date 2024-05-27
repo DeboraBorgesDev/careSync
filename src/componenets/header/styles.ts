@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexFlow: 'row nowrap',
       justifyContent: 'flex-start',
       position: 'relative',
-      zIndex: theme.zIndex.drawer + 1,
     },
     absolute: {
       position: 'absolute',

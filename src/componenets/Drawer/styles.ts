@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: drawerMobileWidth,
     },
-    zIndex: -1,
   },
   appBar: {
     [theme.breakpoints.up('sm')]: {
@@ -41,25 +40,27 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: drawerMobileWidth,
     },
     ...boxShadow,
+    backgroundColor: theme.palette.primary.main
   },
   nestedItem: {
     paddingLeft: theme.spacing(3),
   },
   borderColor: {
-    background: theme.palette.secondary.light,
-    color: '#ffffff',
+    background: theme.palette.secondary.main,
     '&:hover': {
       background: theme.palette.secondary.main,
-    },
-    '& > div:first-child > svg:first-child > path': {
-      color: '#ffffff',
     },
   },
   menuTitle: {
     marginTop: theme.spacing(10),
     color: '#000000',
     padding: theme.spacing(1),
-  }
+  },
+  logo: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    padding: theme.spacing(2)
+  },
 }));
 
 export default useStyles;
