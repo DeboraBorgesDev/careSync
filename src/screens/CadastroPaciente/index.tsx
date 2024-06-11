@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Typography, Button, Container } from '@material-ui/core';
+import { Typography, Button, Container, Paper } from '@material-ui/core';
 import CustomStepper from '../../componenets/PacienteStepper';
+import InformacoesPessoaisContainer from '../../componenets/forms/paciente/informacoes/container';
+import useStyles from './styles';
 
 const CadastroPaciente: React.FC = () => {
+  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const steps = [
@@ -21,17 +24,12 @@ const CadastroPaciente: React.FC = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
         return (
-          <>
-            <Typography variant="h6">Informações Pessoais</Typography>
-          </>
+          <InformacoesPessoaisContainer/>
         );
       case 1:
         return (
@@ -63,21 +61,12 @@ const CadastroPaciente: React.FC = () => {
        activeStep={activeStep}
         >
       <div>
-        {activeStep === steps.length ? (
           <div>
-            <Typography variant="h6" gutterBottom>
-              Cadastro Completo
-            </Typography>
-            <Button onClick={handleReset} variant="contained" color="primary">
-              Resetar
-            </Button>
-          </div>
-        ) : (
-          <div>
-            {renderStepContent(activeStep)}
-            <div style={{ marginTop: 20 }}>
+            <Paper className={classes.paper}>
+              {renderStepContent(activeStep)}
+              <div className={classes.buttons}>
               <Button
-                disabled={activeStep === 0}
+                // disabled={activeStep === 0}
                 onClick={handleBack}
                 style={{ marginRight: 10 }}
               >
@@ -91,8 +80,8 @@ const CadastroPaciente: React.FC = () => {
                 {activeStep === steps.length - 1 ? 'Finalizar' : 'Próximo'}
               </Button>
             </div>
+            </Paper>
           </div>
-        )}
       </div>
       </CustomStepper>
     </Container>
