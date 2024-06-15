@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Typography, Button, Container, Paper } from '@material-ui/core';
+import {Button, Container, Paper } from '@material-ui/core';
 import CustomStepper from '../../componenets/PacienteStepper';
 import InformacoesPessoaisContainer from '../../componenets/forms/paciente/informacoes/container';
 import useStyles from './styles';
 import HFisiologicaContainer from '../../componenets/forms/paciente/HFisiologica/container';
 import HPatologicoContainer from '../../componenets/forms/paciente/HPatologico/container';
+import HFamiliarContainer from '../../componenets/forms/paciente/HFamiliar/container';
 
 const CadastroPaciente: React.FC = () => {
   const classes = useStyles();
@@ -43,9 +44,7 @@ const CadastroPaciente: React.FC = () => {
         );
       case 3:
         return (
-          <>
-            <Typography variant="h6">História Familiar</Typography>
-          </>
+          <HFamiliarContainer/>
         );
       default:
         return 'Desconhecido';
