@@ -1,43 +1,100 @@
-import { Theme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
+
+const drawerWidth = 240;
 
 export const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
   },
-  loader: {
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    '&.open': {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    '&.open': {
+      display: 'none',
+    },
+  },
+  toolbar: {
+    display: 'flex',
+  },
+  logoContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  logo: {
+    marginLeft: theme.spacing(2),
+    height: '40px', 
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+      width: drawerWidth,
+      boxSizing: 'border-box',
+    },
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+    '&.open': {
+      marginLeft: 0,
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+  },
+  loaderContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
   },
-  main: {
-    flexGrow: 1,
-    minHeight: 'calc(100vh - 100px)',
-    [theme.breakpoints.down('md')]: {
-      paddingLeft: '60px',
-    },
-    [theme.breakpoints.up('md')]: {
-      paddingLeft: '240px',
-    },
-    marginTop: theme.spacing(8)
+  nestedItem: {
+    paddingLeft: theme.spacing(3),
   },
-  content: {
-    display: 'flex',
-    flex: 1,
-    padding: theme.spacing(3),
-    paddingBottom: '60px',
-    [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(2),
+  borderColor: {
+    background: theme.palette.secondary.light,
+    color: '#ffffff',
+    '&:hover': {
+      background: theme.palette.secondary.main,
     },
-    [theme.breakpoints.down('xs')]: {
-      padding: theme.spacing(1),
-      paddingBottom: '80px',
+    '& > div:first-child > svg:first-child > path': {
+      color: '#ffffff',
     },
   },
-  loaderContainer: {
-    width: '100%',
+  menuTitle: {
+    marginTop: theme.spacing(10),
+    color: '#000000',
+    padding: theme.spacing(1),
+  },
+  icon: {
+    minWidth: '50px',
   },
 }));

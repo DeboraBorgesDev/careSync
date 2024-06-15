@@ -44,9 +44,8 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: 5,
     },
     logo: {
-      maxWidth: '100%',
+      maxWidth: '70%',
       maxHeight: '100%',
-      marginLeft: '-110px',
     },
     appResponsive: {
       margin: '20px 10px',
