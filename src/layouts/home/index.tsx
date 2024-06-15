@@ -30,7 +30,7 @@ import {
   ExpandMore,
 } from '@mui/icons-material';
 import { useStyles } from './styles';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import logo from '../../media/logo/Group 1.png';
 import classNames from 'classnames';
@@ -39,6 +39,7 @@ import CircularLoader from '../../componenets/CircularLoader';
 const HomeLayout = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [isOpenPacienteMenu, setIsOpenPacienteMenu] = useState(false);
   const [isOpenInternacoesMenu, setIsOpenInternacoesMenu] = useState(false);
@@ -163,40 +164,47 @@ const HomeLayout = () => {
         </div>
         <Divider />
         <List>
-          {drawerItems.map((item) => (
-            <div key={item.label}>
+  {drawerItems.map((item) => (
+    <div key={item.label}>
+      <ListItemButton
+        component={item.link ? CustomLink : 'div'}
+        to={item.link ? item.link : undefined}
+        onClick={item.onClick || undefined}
+        className={
+          item.link === pathname ? itemDrawerActive : itemDrawer
+        }
+      >
+        <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
+        <Hidden smDown implementation="css">
+          <ListItemText primary={item.label} />
+        </Hidden>
+        {item.nestedItems && (item.open ? <ExpandLess /> : <ExpandMore />)}
+      </ListItemButton>
+      {item.nestedItems && (
+        <Collapse in={item.open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {item.nestedItems.map((nestedItem) => (
               <ListItemButton
-                component={item.link ? CustomLink : 'div'}
-                to={item.link ? item.link : undefined}
-                onClick={item.onClick || undefined}
-                className={item.link === window.location.pathname ? itemDrawerActive : itemDrawer}
+                key={nestedItem.label}
+                component={CustomLink}
+                to={nestedItem.link}
+                className={
+                  nestedItem.link === pathname
+                    ? itemNestedActive
+                    : itemNested
+                }
               >
-                <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
-                <Hidden smDown implementation="css">
-                  <ListItemText primary={item.label} />
-                </Hidden>
-                {item.nestedItems && (item.open ? <ExpandLess /> : <ExpandMore />)}
+                <ListItemIcon>{nestedItem.icon}</ListItemIcon>
+                <ListItemText primary={nestedItem.label} />
               </ListItemButton>
-              {item.nestedItems && (
-                <Collapse in={item.open} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    {item.nestedItems.map((nestedItem) => (
-                      <ListItemButton
-                        key={nestedItem.label}
-                        component={CustomLink}
-                        to={nestedItem.link}
-                        className={nestedItem.link === window.location.pathname ? itemNestedActive : itemNested}
-                      >
-                        <ListItemIcon>{nestedItem.icon}</ListItemIcon>
-                        <ListItemText primary={nestedItem.label} />
-                      </ListItemButton>
-                    ))}
-                  </List>
-                </Collapse>
-              )}
-            </div>
-          ))}
-        </List>
+            ))}
+          </List>
+        </Collapse>
+      )}
+    </div>
+  ))}
+</List>
+
       </Drawer>
       <main className={`${classes.content} ${open ? 'open' : ''}`}>
         <div className={classes.drawerHeader} />

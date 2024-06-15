@@ -39,6 +39,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: theme.spacing(2),
     height: '40px', 
   },
+    active: {
+    backgroundColor: theme.palette.action.selected,
+  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -80,13 +83,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     paddingLeft: theme.spacing(3),
   },
   borderColor: {
-    background: theme.palette.secondary.light,
+    background: theme.palette.grey[400],
     color: '#ffffff',
     '&:hover': {
-      background: theme.palette.secondary.main,
-    },
-    '& > div:first-child > svg:first-child > path': {
-      color: '#ffffff',
+      background: theme.palette.primary.light,
     },
   },
   menuTitle: {
@@ -96,5 +96,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   icon: {
     minWidth: '50px',
+  },
+  listItem: {
+    '&:hover': {
+      backgroundColor: theme.palette.grey[400],
+    },
+  },
+  listItemActive: {
+    backgroundColor: theme.palette.action.selected,
+    '&:hover': {
+      backgroundColor: theme.palette.action.selected,
+    },
   },
 }));

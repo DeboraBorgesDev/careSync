@@ -1,4 +1,5 @@
 import DefaultLayout from "../layouts/Default";
+import NotFoundPage from "../screens/NotFound";
 import LoginPage from "../screens/login";
 
 export const commonRoutes = [
@@ -8,9 +9,11 @@ export const commonRoutes = [
         children: [
             {
                 path: 'login',
-                element: (
-                  <LoginPage/>
-                ),
+                element: <LoginPage/>,
+            },
+            {
+                path: '*',
+                element: <NotFoundPage/>,
             },
         ]
     }
