@@ -5,7 +5,7 @@ import useStyles from './styles';
 
 export interface FormValues {
     name: string;
-    dataNacimento: string;
+    dataNacimento: Date | null;
     cpf: string;
     genero: string;
     estadoCivil: string;
@@ -28,7 +28,7 @@ export interface FormValues {
         <Formik<FormValues>
           initialValues={{
             name: '',
-            dataNacimento: '',
+            dataNacimento: null,
             cpf: '',
             genero: 'm',
             estadoCivil: '',
