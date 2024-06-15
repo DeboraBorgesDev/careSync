@@ -3,6 +3,7 @@ import { Typography, Button, Container, Paper } from '@material-ui/core';
 import CustomStepper from '../../componenets/PacienteStepper';
 import InformacoesPessoaisContainer from '../../componenets/forms/paciente/informacoes/container';
 import useStyles from './styles';
+import HFisiologicaContainer from '../../componenets/forms/paciente/HFisiologica/container';
 
 const CadastroPaciente: React.FC = () => {
   const classes = useStyles();
@@ -33,9 +34,7 @@ const CadastroPaciente: React.FC = () => {
         );
       case 1:
         return (
-          <>
-            <Typography variant="h6">História Fisiológica</Typography>
-          </>
+          <HFisiologicaContainer/>
         );
       case 2:
         return (
