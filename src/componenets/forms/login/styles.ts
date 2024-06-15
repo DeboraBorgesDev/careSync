@@ -1,7 +1,10 @@
-import { Theme} from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { Theme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 
-export const useStyles = makeStyles((theme: Theme) => ({
+
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
     card: {
       maxWidth: '500px',
       minHeight: '400px',
@@ -10,12 +13,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
       flexDirection: 'column',
       alignItems: 'center',
     },
-
     gridItem: {
       textAlign: 'center',
     },
     form: {
-        marginTop: theme.spacing(8)
-    }
+      marginTop: theme.spacing(8),
+    },
   })
 );
+
+export default useStyles;
