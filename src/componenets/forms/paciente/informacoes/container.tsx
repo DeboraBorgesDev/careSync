@@ -1,13 +1,16 @@
-import { Formik, FormikProps } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
 import InformacoesPessoais from '.';
 import useStyles from './styles';
+import validationSchema from './schema';
+import { Button } from '@mui/material';
+import { newPaciente } from '../../../../services/paciente';
 
 
 export interface FormValues {
-    name: string;
-    dataNacimento: Date | null;
+    nome: string;
+    dataNascimento: Date | null;
     cpf: string;
-    genero: string;
+    sexo: string;
     estadoCivil: string;
     possuiFilhos: boolean;
     profissao: string;
@@ -18,19 +21,37 @@ export interface FormValues {
   
 
   interface InformacoesPessoaisContainerProps {
+    handleNext: () => void;
+    activeStep: number;
+    handleBack: () => void;
   }
-  
-  const InformacoesPessoaisContainer: React.FC<InformacoesPessoaisContainerProps> = (props) => {
+  const InformacoesPessoaisContainer: React.FC<InformacoesPessoaisContainerProps> = ({
+    handleNext,
+    activeStep,
+    handleBack
+  }) => {
     const classes = useStyles();
+  
+  
+    const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
+      try {
+        await newPaciente(values);
+        handleNext();
+      } catch (error) {
+        console.error('Erro ao criar novo paciente:', error);
+      } finally {
+        setSubmitting(false); 
+      }
+    };
   
     return (
       <>
         <Formik<FormValues>
           initialValues={{
-            name: '',
-            dataNacimento: null,
+            nome: '',
+            dataNascimento: null,
             cpf: '',
-            genero: 'm',
+            sexo: 'm',
             estadoCivil: '',
             possuiFilhos: false,
             profissao: '',
@@ -38,17 +59,36 @@ export interface FormValues {
             nivelEnsino: '',
             endereco: '',
           }}
-          onSubmit={() => {}}
-        //   validationSchema={() => {}}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
         >
           {(fprops: FormikProps<FormValues>) => (
+           <>
             <InformacoesPessoais fprops={fprops} />
+            <div className={classes.buttons}>
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                style={{ marginRight: 10 }}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit" 
+                onClick={fprops.submitForm}
+                disabled={!fprops.isValid}
+              >
+                {activeStep === 3 ? 'Finalizar' : 'Próximo'}
+              </Button>
+            </div>
+           </>
           )}
         </Formik>
       </>
     );
   };
   
-
 
 export default InformacoesPessoaisContainer;

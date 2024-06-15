@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Button, Container, Paper } from '@material-ui/core';
+import { Container, Paper } from '@material-ui/core';
 import CustomStepper from '../../componenets/PacienteStepper';
 import InformacoesPessoaisContainer from '../../componenets/forms/paciente/informacoes/container';
 import useStyles from './styles';
@@ -20,7 +20,7 @@ const CadastroPaciente: React.FC = () => {
 
  
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
@@ -32,7 +32,11 @@ const CadastroPaciente: React.FC = () => {
     switch (step) {
       case 0:
         return (
-          <InformacoesPessoaisContainer/>
+          <InformacoesPessoaisContainer 
+            handleNext={handleNext} 
+            handleBack={handleBack}
+            activeStep={activeStep}
+          />
         );
       case 1:
         return (
@@ -61,22 +65,6 @@ const CadastroPaciente: React.FC = () => {
           <div>
             <Paper className={classes.paper}>
               {renderStepContent(activeStep)}
-              <div className={classes.buttons}>
-              <Button
-                // disabled={activeStep === 0}
-                onClick={handleBack}
-                style={{ marginRight: 10 }}
-              >
-                Voltar
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-              >
-                {activeStep === steps.length - 1 ? 'Finalizar' : 'Próximo'}
-              </Button>
-            </div>
             </Paper>
           </div>
       </div>

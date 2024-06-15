@@ -11,6 +11,7 @@ interface InformacoesPessoaisProps {
 
 const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => {
   const classes = useStyles();
+  console.log(fprops)
 
   return (
     <Grid container spacing={2}>
@@ -19,9 +20,10 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           label="Nome"
           type="text"
           fprops={fprops}
-          fkey="name"
+          fkey="nome"
           fullWidth
           disabled={false}
+          required
         />
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -29,7 +31,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           type="date"
           label="Data de Nascimento"
           fprops={fprops}
-          fkey="dataNacimento"
+          fkey="dataNascimento"
           fullWidth
           disabled={false}
           required
@@ -45,6 +47,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           fprops={fprops}
           fkey="cpf"
           fullWidth
+          required
           placeholder="999.999.999-99"
           mask="999.999.999-99"
           disabled={false}
@@ -56,12 +59,12 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           <RadioGroup
             row
             aria-label="gênero"
-            name="genero"
-            value={fprops.values.genero}
-            onChange={(e) => fprops.setFieldValue('genero', e.target.value)}
+            name="sexo"
+            value={fprops.values.sexo}
+            onChange={(e) => fprops.setFieldValue('sexo', e.target.value)}
           >
-            <FormControlLabel value="masculino" control={<Radio />} label="Masculino" />
-            <FormControlLabel value="feminino" control={<Radio />} label="Feminino" />
+            <FormControlLabel value="m" control={<Radio />} label="Masculino" />
+            <FormControlLabel value="f" control={<Radio />} label="Feminino" />
           </RadioGroup>
         </FormControl>
       </Grid>
@@ -73,10 +76,10 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
             aria-label="possuiFilhos"
             name="possuiFilhos"
             value={fprops.values.possuiFilhos}
-            onChange={(e) => fprops.setFieldValue('possuiFilhos', e.target.value)}
+            onChange={(e) => fprops.setFieldValue('possuiFilhos', e.target.value === 't')}
           >
-            <FormControlLabel value="sim" control={<Radio />} label="Sim" />
-            <FormControlLabel value="nao" control={<Radio />} label="Não" />
+            <FormControlLabel value={true} control={<Radio />} label="Sim" />
+            <FormControlLabel value={false} control={<Radio />} label="Não" />
           </RadioGroup>
         </FormControl>
       </Grid>

@@ -14,6 +14,12 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: 120,
       fullWidth: true,
     },
+    buttons: {
+      marginTop: theme.spacing(2),
+      display: 'flex',
+      justifyContent: 'flex-end'
+    }
+  
   })
 );
 
