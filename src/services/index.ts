@@ -12,9 +12,9 @@ const token = localStorage.getItem('token');
 
 const addToken = (config: AxiosRequestConfig) => {
     if (config.headers) {
-        config.headers.Authorization = `${token}`;
+        config.headers.Authorization = `Bearer ${token}`;
     } else {
-        config.headers = { Authorization: `${token}` };
+        config.headers = { Authorization: `Bearer ${token}` };
     }
 };
 

@@ -4,6 +4,7 @@ import useStyles from './styles';
 import validationSchema from './schema';
 import { Button } from '@mui/material';
 import { newPaciente } from '../../../../services/paciente';
+import { toast } from 'react-toastify';
 
 
 export interface FormValues {
@@ -24,6 +25,7 @@ export interface FormValues {
     handleNext: () => void;
     activeStep: number;
     handleBack: () => void;
+
   }
   const InformacoesPessoaisContainer: React.FC<InformacoesPessoaisContainerProps> = ({
     handleNext,
@@ -38,6 +40,8 @@ export interface FormValues {
         await newPaciente(values);
         handleNext();
       } catch (error) {
+        //@ts-ignore
+        toast.error(error.response.data as string)
         console.error('Erro ao criar novo paciente:', error);
       } finally {
         setSubmitting(false); 
