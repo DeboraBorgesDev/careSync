@@ -93,7 +93,7 @@ const HomeLayout = () => {
         },
         {
           label: 'Buscar paciente',
-          link: '/paciente/buscar',
+          link: '/paciente/lista',
           icon: <Search />,
         },
       ],

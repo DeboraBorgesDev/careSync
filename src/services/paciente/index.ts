@@ -3,6 +3,7 @@ import { HFamiliarValues } from "../../componenets/forms/paciente/HFamiliar/cont
 import { HfisiologicaValues } from "../../componenets/forms/paciente/HFisiologica/container";
 import { HPatologicoValues } from "../../componenets/forms/paciente/HPatologico/container";
 import { FormValues } from "../../componenets/forms/paciente/informacoes/container";
+import { Paciente } from "../../screens/PacientesList";
 
 
 export function newPaciente(data: FormValues): Promise<any> {
@@ -38,3 +39,12 @@ export function newHFamiliar(data: HFamiliarValues): Promise<any> {
     data,
   }).then(response => response.data);
 }
+
+
+export function getAllPacientes(): Promise<Paciente[]> {
+  return authApi.request({
+    method: 'get',
+    url: 'pacientes',
+  }).then(response => response.data);
+}
+
