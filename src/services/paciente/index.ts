@@ -1,4 +1,5 @@
 import { authApi } from "..";
+import { HFamiliarValues } from "../../componenets/forms/paciente/HFamiliar/container";
 import { HfisiologicaValues } from "../../componenets/forms/paciente/HFisiologica/container";
 import { HPatologicoValues } from "../../componenets/forms/paciente/HPatologico/container";
 import { FormValues } from "../../componenets/forms/paciente/informacoes/container";
@@ -22,6 +23,15 @@ export function newHFisiologica(data: HfisiologicaValues): Promise<any> {
 }
 
 export function newHPatologico(data: HPatologicoValues): Promise<any> {
+  return authApi.request({
+    method: 'post',
+    url: 'historico-patologico',
+    data,
+  }).then(response => response.data);
+}
+
+
+export function newHFamiliar(data: HFamiliarValues): Promise<any> {
   return authApi.request({
     method: 'post',
     url: 'historico-patologico',

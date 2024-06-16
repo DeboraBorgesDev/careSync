@@ -60,7 +60,12 @@ const CadastroPaciente: React.FC = () => {
         );
       case 3:
         return (
-          <HFamiliarContainer/>
+          <HFamiliarContainer
+            handleNext={handleNext} 
+            handleBack={handleBack}
+            activeStep={activeStep}
+            idPaciente={idPaciente as string}
+          />
         );
       default:
         return 'Desconhecido';

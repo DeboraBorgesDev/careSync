@@ -1,12 +1,16 @@
 import React from 'react';
-import { Formik, FormikProps } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
 import HFamiliar from '.';
+import { Button } from '@mui/material';
+import useStyles from './styles';
+import { newHFamiliar } from '../../../../services/paciente';
+import { validationSchema } from './schema';
 
-export interface FormValues {
+export interface HFamiliarValues {
   pacienteId: string;
-  idadeMortePai: number | null;
+  idadeMortePai: number ;
   causaMortePai: string;
-  idadeMorteMae: number | null;
+  idadeMorteMae: number;
   causaMorteMae: string;
   doencasMae: string;
   doencasPai: string;
@@ -15,29 +19,77 @@ export interface FormValues {
   historicoSaudeParentes: string;
 }
 
-interface HFamiliarContainerProps {}
+interface HFamiliarContainerProps {
+  handleNext: () => void;
+  activeStep: number;
+  handleBack: () => void;
+  idPaciente: string
+}
 
-const HFamiliarContainer: React.FC<HFamiliarContainerProps> = (props) => {
+const HFamiliarContainer: React.FC<HFamiliarContainerProps> = (
+  {
+    handleNext,
+    activeStep,
+    handleBack,
+    idPaciente
+  }
+) => {
+  const classes = useStyles();
+
+  const handleSubmit = async (values: HFamiliarValues, { setSubmitting }: FormikHelpers<HFamiliarValues>) => {
+    try {
+      await newHFamiliar(values);
+      handleNext();
+    } catch (error) {
+      //@ts-ignore
+      toast.error(error.response.data as string)
+    } finally {
+      setSubmitting(false); 
+    }
+  };
+
   return (
-    <Formik<FormValues>
+    <Formik<HFamiliarValues>
       initialValues={{
-        pacienteId: '',
-        idadeMortePai: null,
+        pacienteId: idPaciente,
+        idadeMortePai: 0,
         causaMortePai: '',
-        idadeMorteMae: null,
+        idadeMorteMae: 0,
         causaMorteMae: '',
         doencasMae: '',
         doencasPai: '',
-        filhosSaudaveis: false,
+        filhosSaudaveis: true,
         filhosObservacoes: '',
         historicoSaudeParentes: '',
       }}
-      onSubmit={(values) => {
-        // Aqui você pode fazer o que quiser com os valores do formulário após o envio
-        console.log(values);
-      }}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
     >
-      {(fprops: FormikProps<FormValues>) => <HFamiliar fprops={fprops} />}
+      {(fprops: FormikProps<HFamiliarValues>) => {
+        return (
+          <>
+            <HFamiliar fprops={fprops} />
+            <div className={classes.buttons}>
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  style={{ marginRight: 10 }}
+                >
+                  Voltar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit" 
+                  onClick={fprops.submitForm}
+                  disabled={!fprops.isValid}
+                >
+                  {activeStep === 3 ? 'Finalizar' : 'Próximo'}
+                </Button>
+              </div>
+          </>
+        )
+      }}
     </Formik>
   );
 };

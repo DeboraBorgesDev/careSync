@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { Grid, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { getIn, FormikProps } from 'formik';
-import { FormValues } from './container';
+import { HFamiliarValues } from './container';
 
 import TextInput from '../../../inputs/text-input';
 import useStyles from './styles';
 
 interface HFamiliarProps {
-  fprops: FormikProps<FormValues>;
+  fprops: FormikProps<HFamiliarValues>;
 }
 
 const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
   const classes = useStyles();
   const [showFilhosObservacoes, setShowFilhosObservacoes] = useState(false);
 
-  const renderRadioGroup = (name: keyof FormValues, label: string) => (
+  const renderRadioGroup = (name: keyof HFamiliarValues, label: string) => (
     <FormControl component="fieldset" className={classes.formControl}>
       <FormLabel component="legend">{label}</FormLabel>
       <RadioGroup
