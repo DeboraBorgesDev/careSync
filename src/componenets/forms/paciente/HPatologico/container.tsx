@@ -1,8 +1,12 @@
 import React from 'react';
-import { Formik, FormikProps } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
 import useStyles from './styles';
 import HPatologico from '.';
-export interface FormValues {
+import { Button } from '@mui/material';
+import { newHPatologico } from '../../../../services/paciente';
+import { validationSchema } from './schema';
+
+export interface HPatologicoValues {
   idPaciente: string;
   queixaPrincipal: string;
   historiaDoencaAtual: string;
@@ -18,33 +22,77 @@ export interface FormValues {
   alergias: string;
 }
 
-interface HHPatologicoContainerProps {}
+interface HHPatologicoContainerProps {
+  handleNext: () => void;
+  activeStep: number;
+  handleBack: () => void;
+  idPaciente: string
+}
 
-const HPatologicoContainer: React.FC<HHPatologicoContainerProps> = (props) => {
+const HPatologicoContainer: React.FC<HHPatologicoContainerProps> = (
+  {
+    handleNext,
+    activeStep,
+    handleBack,
+    idPaciente
+  }
+) => {
   const classes = useStyles();
 
+  const handleSubmit = async (values: HPatologicoValues, { setSubmitting }: FormikHelpers<HPatologicoValues>) => {
+    try {
+      await newHPatologico(values);
+      handleNext();
+    } catch (error) {
+      //@ts-ignore
+      toast.error(error.response.data as string)
+    } finally {
+      setSubmitting(false); 
+    }
+  };
+
   return (
-    <Formik<FormValues>
+    <Formik<HPatologicoValues>
       initialValues={{
-        idPaciente: '77054aee-c6a4-439d-b3d2-faea44c414ed',
-        queixaPrincipal: 'Dor abdominal',
-        historiaDoencaAtual: 'Paciente apresenta dor abdominal há 2 dias...',
+        idPaciente: idPaciente,
+        queixaPrincipal: '',
+        historiaDoencaAtual: '',
         possuiDiabetes: false,
         possuiHipertensao: false,
         possuiDislipidemia: false,
         medicacaoContinua: true,
-        medicacoes: 'Medicamento X, Medicamento Y',
+        medicacoes: '',
         internadoAnteriormente: false,
         cirurgiasAnteriormente: true,
-        cirurgiasAnterioresObservacoes: 'Cirurgia de apendicite realizada em 2018',
-        vacinas: 'Vacina A, Vacina B',
-        alergias: 'Alergia a penicilina',
+        cirurgiasAnterioresObservacoes: '',
+        vacinas: '',
+        alergias: '',
       }}
-      onSubmit={() => {}}
-      // validationSchema={() => {}}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
     >
-      {(fprops: FormikProps<FormValues>) => (
-        <HPatologico fprops={fprops} />
+      {(fprops: FormikProps<HPatologicoValues>) => (
+        <>
+           <HPatologico fprops={fprops} />
+           <div className={classes.buttons}>
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                style={{ marginRight: 10 }}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit" 
+                onClick={fprops.submitForm}
+                disabled={!fprops.isValid}
+              >
+                {activeStep === 3 ? 'Finalizar' : 'Próximo'}
+              </Button>
+            </div>
+        </>
       )}
     </Formik>
   );

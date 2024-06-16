@@ -1,12 +1,12 @@
 import React from 'react';
 import { Grid, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { getIn, FormikProps } from 'formik';
-import { FormValues } from './container';
+import { HPatologicoValues } from './container';
 import useStyles from './styles';
 import TextInput from '../../../inputs/text-input';
 
 interface HPatologicoProps {
-  fprops: FormikProps<FormValues>;
+  fprops: FormikProps<HPatologicoValues>;
 }
 
 const HPatologico: React.FC<HPatologicoProps> = ({ fprops }) => {
@@ -14,7 +14,7 @@ const HPatologico: React.FC<HPatologicoProps> = ({ fprops }) => {
 
  
 
-  const renderRadioGroup = (name: keyof FormValues, label: string) => (
+  const renderRadioGroup = (name: keyof HPatologicoValues, label: string) => (
     <FormControl component="fieldset" className={classes.formControl}>
       <FormLabel component="legend">{label}</FormLabel>
       <RadioGroup
