@@ -5,6 +5,9 @@ import { Button } from '@mui/material';
 import useStyles from './styles';
 import { newHFamiliar } from '../../../../services/paciente';
 import { validationSchema } from './schema';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 export interface HFamiliarValues {
   pacienteId: string;
@@ -35,11 +38,12 @@ const HFamiliarContainer: React.FC<HFamiliarContainerProps> = (
   }
 ) => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const handleSubmit = async (values: HFamiliarValues, { setSubmitting }: FormikHelpers<HFamiliarValues>) => {
     try {
       await newHFamiliar(values);
-      handleNext();
+      navigate('/paciente/lista');
     } catch (error) {
       //@ts-ignore
       toast.error(error.response.data as string)

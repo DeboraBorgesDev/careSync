@@ -1,5 +1,6 @@
 import HomeLayout from "../layouts/home";
 import CadastroPaciente from "../screens/CadastroPaciente";
+import PacientesListPage from "../screens/PacientesList";
 import HomePage from "../screens/home";
 
 export const privateRoutes = [
@@ -17,6 +18,12 @@ export const privateRoutes = [
                 path: 'paciente/novo',
                 element: (
                   <CadastroPaciente/>
+                ),
+              },
+              {
+                path: 'paciente/lista',
+                element: (
+                  <PacientesListPage/>
                 ),
               },
         ]

@@ -8,7 +8,7 @@ export const validationSchema = Yup.object().shape({
     message: 'Causa de morte do pai é obrigatória',
     test: function(value) {
       const idadeMortePai = this.resolve(Yup.ref('idadeMortePai')) as number;
-      if (idadeMortePai >= 0) {
+      if (idadeMortePai !== 0) {
         return !!value;
       }
       return true;
@@ -20,7 +20,7 @@ export const validationSchema = Yup.object().shape({
     message: 'Causa de morte da mãe é obrigatória',
     test: function(value) {
       const idadeMorteMae = this.resolve(Yup.ref('idadeMorteMae')) as number;
-      if (idadeMorteMae >= 0) {
+      if (idadeMorteMae !== 0) {
         return !!value;
       }
       return true;

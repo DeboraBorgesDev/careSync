@@ -34,7 +34,7 @@ export function newHPatologico(data: HPatologicoValues): Promise<any> {
 export function newHFamiliar(data: HFamiliarValues): Promise<any> {
   return authApi.request({
     method: 'post',
-    url: 'historico-patologico',
+    url: 'historia-familiar',
     data,
   }).then(response => response.data);
 }
