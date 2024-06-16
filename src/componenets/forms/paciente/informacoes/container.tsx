@@ -25,24 +25,26 @@ export interface FormValues {
     handleNext: () => void;
     activeStep: number;
     handleBack: () => void;
+    setIdPaciente: (id: string) => void
 
   }
   const InformacoesPessoaisContainer: React.FC<InformacoesPessoaisContainerProps> = ({
     handleNext,
     activeStep,
-    handleBack
+    handleBack,
+    setIdPaciente
   }) => {
     const classes = useStyles();
   
   
     const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
       try {
-        await newPaciente(values);
+        const paciente = await newPaciente(values);
+        setIdPaciente(paciente.id)
         handleNext();
       } catch (error) {
         //@ts-ignore
         toast.error(error.response.data as string)
-        console.error('Erro ao criar novo paciente:', error);
       } finally {
         setSubmitting(false); 
       }

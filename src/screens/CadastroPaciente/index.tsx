@@ -10,6 +10,7 @@ import HFamiliarContainer from '../../componenets/forms/paciente/HFamiliar/conta
 const CadastroPaciente: React.FC = () => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
+  const [idPaciente, setIdPaciente] = useState<string|null>(null)
 
   const steps = [
     'Informações Pessoais',
@@ -36,6 +37,7 @@ const CadastroPaciente: React.FC = () => {
             handleNext={handleNext} 
             handleBack={handleBack}
             activeStep={activeStep}
+            setIdPaciente={setIdPaciente}
           />
         );
       case 1:
