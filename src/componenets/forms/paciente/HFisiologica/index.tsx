@@ -3,10 +3,10 @@ import { Grid } from '@mui/material';
 import { FormikProps } from 'formik'; // Corrigir o caminho de importação se necessário
 import TextInput from '../../../inputs/text-input';
 import useStyles from './styles';
-import { FormValues } from './container';
+import { HfisiologicaValues } from './container';
 
 interface HFisiologicaProps {
-  fprops: FormikProps<FormValues>;
+  fprops: FormikProps<HfisiologicaValues>;
 }
 
 const HFisiologica: React.FC<HFisiologicaProps> = ({ fprops }) => {

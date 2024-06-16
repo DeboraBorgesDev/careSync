@@ -42,7 +42,12 @@ const CadastroPaciente: React.FC = () => {
         );
       case 1:
         return (
-          <HFisiologicaContainer/>
+          <HFisiologicaContainer
+            handleNext={handleNext} 
+            handleBack={handleBack}
+            activeStep={activeStep}
+            idPaciente={idPaciente as string}
+          />
         );
       case 2:
         return (
