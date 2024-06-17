@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Button, Dialog, DialogTitle, Tooltip, IconButton } from '@mui/material';
-import { Internacao, getAllInternacoes } from '../../services/internacoes';
-import { formatDate } from '../../utils/date'; 
-import Datatable from '../../componenets/Datatable';
-import InternacaoContainer from '../../componenets/forms/internacao/container';
+import { Grid, Button,  Tooltip, IconButton } from '@mui/material';
+import { Internacao,  getAllInternacoesByPaciente } from '../../../services/internacoes';
+import { formatDate } from '../../../utils/date'; 
+import Datatable from '../../../componenets/Datatable';
 import { Edit, Visibility } from '@mui/icons-material';
+import { useOutletContext } from 'react-router-dom';
+import { Paciente } from '../../PacientesList';
 
-const InternacoesListPage: React.FC = () => {
+const InternacoesPage: React.FC = () => {
+  const {paciente} = useOutletContext<{paciente: Paciente}>()
   const [internacoes, setInternacoes] = useState<Internacao[] | null>(null);
   const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
+
 
 
   const actions = (internacao: Internacao) => (
@@ -33,10 +35,10 @@ const InternacoesListPage: React.FC = () => {
     </IconButton>
   </Tooltip>
     {!internacao?.dataSaida && (
-        <Button variant='outlined' color='primary'>
-        Dar alta
-      </Button>
-      )}
+      <Button variant='outlined' color='primary'>
+      Dar alta
+    </Button>
+    )}
    </>
 );
 
@@ -71,7 +73,7 @@ const InternacoesListPage: React.FC = () => {
     : [];
 
     const fetchInternacoes = async () => {
-      await getAllInternacoes()
+      await getAllInternacoesByPaciente(paciente.id)
       .then((data) => {
         setInternacoes(data);
       })
@@ -87,21 +89,11 @@ const InternacoesListPage: React.FC = () => {
     fetchInternacoes()
   }, []);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <Grid container>
       <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Internações</h1>
-        <Button variant="contained" color="primary" onClick={handleOpen}>
-          Nova internação
-        </Button>
       </Grid>
       <Grid item xs={12}>
         <Datatable
@@ -112,12 +104,12 @@ const InternacoesListPage: React.FC = () => {
           color="primary"
         />
       </Grid>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+      {/* <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
         <DialogTitle>Nova internação</DialogTitle>
         <InternacaoContainer internacao={null} onClose={handleClose} fetchInternacoes={fetchInternacoes} />
-      </Dialog>
+      </Dialog> */}
     </Grid>
   );
 };
 
-export default InternacoesListPage;
+export default InternacoesPage;

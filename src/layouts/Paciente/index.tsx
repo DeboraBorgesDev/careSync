@@ -67,7 +67,7 @@ const PacienteLayout = () => {
     },
     {
       label: 'Internações',
-      link: '/paciente/internações',
+      link: `/paciente/${id}/internacoes`,
       icon: <Article />,
     },
     {

@@ -23,6 +23,13 @@ export function getAllInternacoes(): Promise<Internacao[]> {
   }).then(response => response.data);
 }
 
+export function getAllInternacoesByPaciente(id: string): Promise<Internacao[]> {
+  return authApi.request({
+    method: 'get',
+    url: `internacao/paciente/${id}`,
+  }).then(response => response.data);
+}
+
 export function newInternacao(data: InternacaoValues): Promise<any> {
   return authApi.request({
     method: 'post',
