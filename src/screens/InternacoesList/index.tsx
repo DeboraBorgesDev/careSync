@@ -30,8 +30,8 @@ const InternacoesListPage: React.FC = () => {
       ])
     : [];
 
-  useEffect(() => {
-    getAllInternacoes()
+    const fetchInternacoes = async () => {
+      await getAllInternacoes()
       .then((data) => {
         setInternacoes(data);
       })
@@ -41,6 +41,10 @@ const InternacoesListPage: React.FC = () => {
       .finally(() => {
         setLoading(false);
       });
+    }
+
+  useEffect(() => {
+    fetchInternacoes()
   }, []);
 
   const handleOpen = () => {
@@ -70,7 +74,7 @@ const InternacoesListPage: React.FC = () => {
       </Grid>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
         <DialogTitle>Nova internação</DialogTitle>
-        <InternacaoContainer internacao={null} onClose={handleClose} />
+        <InternacaoContainer internacao={null} onClose={handleClose} fetchInternacoes={fetchInternacoes} />
       </Dialog>
     </Grid>
   );

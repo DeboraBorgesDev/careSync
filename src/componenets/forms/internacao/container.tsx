@@ -21,12 +21,14 @@ export type InternacaoValues = {
 interface InternacaoContainerProps {
  internacao: Internacao | null;
  onClose: () => void;
+ fetchInternacoes: () => void;
 }
 
 const InternacaoContainer: React.FC<InternacaoContainerProps> = (
   {
     internacao = null,
-    onClose
+    onClose,
+    fetchInternacoes
   }
 ) => {
   const classes = useStyles();
@@ -46,10 +48,13 @@ const InternacaoContainer: React.FC<InternacaoContainerProps> = (
         setDisable(true);
       } else {
         await newInternacao(values);
+        toast.success('Internação criada com sucesso');
       }
+      fetchInternacoes()
+      onClose()
     } catch (error) {
       // @ts-ignore
-      toast.error(error.message);
+      toast.error(error.response.data);
     } finally {
       setSubmitting(false);
     }
