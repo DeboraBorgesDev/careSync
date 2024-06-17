@@ -1,14 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Button, Dialog, DialogTitle } from '@mui/material';
+import { Grid, Button, Dialog, DialogTitle, Tooltip, IconButton } from '@mui/material';
 import { Internacao, getAllInternacoes } from '../../services/internacoes';
 import { formatDate } from '../../utils/date'; 
 import Datatable from '../../componenets/Datatable';
 import InternacaoContainer from '../../componenets/forms/internacao/container';
+import { Edit, Visibility } from '@mui/icons-material';
 
 const InternacoesListPage: React.FC = () => {
   const [internacoes, setInternacoes] = useState<Internacao[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+
+
+  const actions = (internacao: Internacao) => (
+   <>
+     <Tooltip title='Ver detalhes'>
+      <IconButton
+        color="primary"
+        aria-label="Ver detalhes"
+        onClick={() => {}}
+      >
+        <Visibility />
+      </IconButton>
+    </Tooltip>
+    <Tooltip title='Ver paciente' style={{marginRight: '5px'}}>
+    <IconButton
+      color="primary"
+      aria-label="Editar"
+      onClick={() => {}}
+    >
+      <Edit />
+    </IconButton>
+  </Tooltip>
+    <Button variant='outlined' color='primary'>
+      Dar alta
+    </Button>
+   </>
+);
+
 
   const columns = [
     { name: 'paciente', label: 'Paciente' },
@@ -16,7 +45,15 @@ const InternacoesListPage: React.FC = () => {
     { name: 'dataEntrada', label: 'Data entrada' },
     { name: 'motivo', label: 'Motivo' },
     { name: 'dataSaida', label: 'Alta em' },
-    { name: 'medico', label: 'Médico' }
+    { name: 'medico', label: 'Médico' },
+    { 
+      name: 'actions',
+      label:'Ações',
+      options: {
+        customBodyRender: (value: Internacao) => actions(value),
+
+      },
+    }
   ];
 
   const internacoesData = internacoes
@@ -26,7 +63,8 @@ const InternacoesListPage: React.FC = () => {
         formatDate(internacao.dataEntrada, 'dd/MM/yyyy HH:mm'),
         internacao.motivo,
         internacao.dataSaida ? formatDate(internacao.dataSaida, 'dd/MM/yyyy HH:mm') : '',
-        internacao.medico.nome
+        internacao.medico.nome,
+        internacao
       ])
     : [];
 
