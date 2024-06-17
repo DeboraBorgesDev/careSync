@@ -3,13 +3,15 @@ import InformacoesPessoais from '.';
 import useStyles from './styles';
 import validationSchema from './schema';
 import { Button } from '@mui/material';
-import { newPaciente } from '../../../../services/paciente';
+import { editInformacoes, newPaciente } from '../../../../services/paciente';
 import { toast } from 'react-toastify';
+import { Paciente } from '../../../../screens/PacientesList';
+import { useState } from 'react';
 
 
 export interface FormValues {
     nome: string;
-    dataNascimento: Date | null;
+    dataNascimento: string | null;
     cpf: string;
     sexo: string;
     estadoCivil: string;
@@ -25,27 +27,37 @@ export interface FormValues {
     handleNext?: () => void;
     activeStep?: number;
     handleBack?: () => void;
-    setIdPaciente?: (id: string) => void
+    setIdPaciente?: (id: string) => void;
+    paciente?: Paciente 
 
   }
   const InformacoesPessoaisContainer: React.FC<InformacoesPessoaisContainerProps> = ({
     handleNext,
     activeStep,
     handleBack,
-    setIdPaciente
+    setIdPaciente,
+    paciente = null
   }) => {
     const classes = useStyles();
+    const isEdit = paciente !== null;
+    const [disable, setDisable] = useState(isEdit)
   
   
     const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
       try {
-        const paciente = await newPaciente(values);
-        if(setIdPaciente){
-          setIdPaciente(paciente.id)
+        if(isEdit){
+          await editInformacoes(values, paciente.id);
+          setDisable(true);
+        }else {
+          const paciente = await newPaciente(values);
+          if(setIdPaciente){
+            setIdPaciente(paciente.id)
+          }
+          if(handleNext){
+            handleNext();
+          }
         }
-        if(handleNext){
-          handleNext();
-        }
+        
       } catch (error) {
         //@ts-ignore
         toast.error(error.response.data as string)
@@ -58,25 +70,46 @@ export interface FormValues {
       <>
         <Formik<FormValues>
           initialValues={{
-            nome: '',
-            dataNascimento: null,
-            cpf: '',
-            sexo: 'm',
-            estadoCivil: '',
-            possuiFilhos: false,
-            profissao: '',
-            religiao: '',
-            nivelEnsino: '',
-            endereco: '',
+            nome: paciente?.nome || '',
+            dataNascimento: paciente?.dataNascimento || null,
+            cpf: paciente?.cpf || '',
+            sexo: paciente?.sexo || 'm',
+            estadoCivil: paciente?.estadoCivil || '',
+            possuiFilhos: paciente?.possuiFilhos || false,
+            profissao: paciente?.profissao || '',
+            religiao: paciente?.religiao || '',
+            nivelEnsino: paciente?.nivelEnsino || '',
+            endereco: paciente?.endereco || '',
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {(fprops: FormikProps<FormValues>) => (
            <>
-            <InformacoesPessoais fprops={fprops} />
+            <InformacoesPessoais fprops={fprops} disable={disable} isEdit={isEdit} />
             <div className={classes.buttons}>
-              <Button
+              {isEdit ? (
+                <>
+                <Button
+                  disabled={!disable}
+                  onClick={(prev) => setDisable(!prev)}
+                  style={{ marginRight: 10 }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit" 
+                  onClick={fprops.submitForm}
+                  disabled={disable}
+                >
+                  Salvar
+                </Button>
+                </>
+              ) : (
+                <>
+                   <Button
                 disabled={activeStep === 0}
                 onClick={handleBack}
                 style={{ marginRight: 10 }}
@@ -92,6 +125,8 @@ export interface FormValues {
               >
                 {activeStep === 3 ? 'Finalizar' : 'Próximo'}
               </Button>
+                </>
+              )}
             </div>
            </>
           )}

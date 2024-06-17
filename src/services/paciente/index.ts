@@ -14,6 +14,14 @@ export function newPaciente(data: FormValues): Promise<any> {
     }).then(response => response.data);
   }
 
+  export function editInformacoes(data: FormValues, id: string): Promise<any> {
+    return authApi.request({
+      method: 'put',
+      url: `pacientes/${id}`,
+      data,
+    }).then(response => response.data);
+  }
+
 
 export function newHFisiologica(data: HfisiologicaValues): Promise<any> {
   return authApi.request({

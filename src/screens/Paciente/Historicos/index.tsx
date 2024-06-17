@@ -3,16 +3,24 @@ import { Grid } from '@mui/material';
 import TabsPanel from '../../../componenets/TabsPanel';
 import { ChildFriendly, Groups, Masks, Person } from '@mui/icons-material';
 import InformacoesPessoaisContainer from '../../../componenets/forms/paciente/informacoes/container';
+import { useOutletContext } from 'react-router-dom';
+import { Paciente } from '../../PacientesList';
 
 
 const HistoricosPage: React.FC = () => {
     const [currentTab, setCurrentTab] = useState(0);
+    const {paciente} = useOutletContext<{
+      paciente: Paciente
+    }>();
 
     const items = [
         {
           label: 'Informações Pessoais',
           icon: <Person />,
-          content: <InformacoesPessoaisContainer/>,
+          content: 
+          <InformacoesPessoaisContainer
+            paciente={paciente}
+          />,
         },
         {
             label: 'História Fisiológica',

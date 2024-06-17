@@ -7,9 +7,11 @@ import useStyles from './styles';
 
 interface InformacoesPessoaisProps {
   fprops: FormikProps<FormValues>;
+  disable: boolean;
+  isEdit: boolean;
 }
 
-const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => {
+const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops, disable, isEdit }) => {
   const classes = useStyles();
   console.log(fprops)
 
@@ -22,7 +24,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           fprops={fprops}
           fkey="nome"
           fullWidth
-          disabled={false}
+          disabled={disable}
           required
         />
       </Grid>
@@ -33,7 +35,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           fprops={fprops}
           fkey="dataNascimento"
           fullWidth
-          disabled={false}
+          disabled={disable}
           required
           disablePast
           inputVariant="outlined"
@@ -50,7 +52,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           required
           placeholder="999.999.999-99"
           mask="999.999.999-99"
-          disabled={false}
+          disabled={isEdit}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -61,10 +63,11 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
             aria-label="gênero"
             name="sexo"
             value={fprops.values.sexo}
+            aria-disabled={disable}
             onChange={(e) => fprops.setFieldValue('sexo', e.target.value)}
           >
-            <FormControlLabel value="m" control={<Radio />} label="Masculino" />
-            <FormControlLabel value="f" control={<Radio />} label="Feminino" />
+            <FormControlLabel value="m" control={<Radio />} label="Masculino"  disabled={disable} />
+            <FormControlLabel value="f" control={<Radio />} label="Feminino" disabled={disable} />
           </RadioGroup>
         </FormControl>
       </Grid>
@@ -76,10 +79,11 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
             aria-label="possuiFilhos"
             name="possuiFilhos"
             value={fprops.values.possuiFilhos}
-            onChange={(e) => fprops.setFieldValue('possuiFilhos', e.target.value === 't')}
+            aria-disabled={disable}
+            onChange={(e) => fprops.setFieldValue('possuiFilhos', e.target.value)}
           >
-            <FormControlLabel value={true} control={<Radio />} label="Sim" />
-            <FormControlLabel value={false} control={<Radio />} label="Não" />
+            <FormControlLabel value={true} control={<Radio />} label="Sim" disabled={disable} />
+            <FormControlLabel value={false} control={<Radio />} label="Não" disabled={disable} />
           </RadioGroup>
         </FormControl>
       </Grid>
@@ -90,7 +94,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           fprops={fprops}
           fkey="profissao"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -100,7 +104,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           fprops={fprops}
           fkey="religiao"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -110,7 +114,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           fprops={fprops}
           fkey="nivelEnsino"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -120,7 +124,7 @@ const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops }) => 
           fprops={fprops}
           fkey="endereco"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
     </Grid>

@@ -16,6 +16,7 @@ export interface Paciente {
   profissao: string;
   religiao: string;
   nivelEnsino: string;
+  endereco: string;
 }
 
 const PacientesListPage: React.FC = () => {
