@@ -8,9 +8,10 @@ import useStyles from './styles';
 
 interface HFamiliarProps {
   fprops: FormikProps<HFamiliarValues>;
+  disable: boolean;
 }
 
-const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
+const HFamiliar: React.FC<HFamiliarProps> = ({ fprops, disable }) => {
   const classes = useStyles();
   const [showFilhosObservacoes, setShowFilhosObservacoes] = useState(false);
 
@@ -21,6 +22,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
         row
         name={name}
         value={getIn(fprops.values, name)}
+        aria-disabled={disable}
         onChange={(e) => {
           fprops.setFieldValue(name, e.target.value);
           if (name === 'filhosSaudaveis') {
@@ -28,8 +30,8 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
           }
         }}
       >
-        <FormControlLabel value={true} control={<Radio />} label="Sim" />
-        <FormControlLabel value={false} control={<Radio />} label="Não" />
+        <FormControlLabel value={true} control={<Radio />} label="Sim" disabled={disable} />
+        <FormControlLabel value={false} control={<Radio />} label="Não" disabled={disable} />
       </RadioGroup>
     </FormControl>
   );
@@ -43,7 +45,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="idadeMortePai"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={8}>
@@ -53,7 +55,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="causaMortePai"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12}>
@@ -63,7 +65,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="doencasPai"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={4}>
@@ -73,7 +75,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="idadeMorteMae"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={8}>
@@ -83,7 +85,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="causaMorteMae"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12}>
@@ -93,7 +95,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="doencasMae"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12}>
@@ -107,7 +109,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
             fprops={fprops}
             fkey="filhosObservacoes"
             fullWidth
-            disabled={false}
+            disabled={disable}
           />
         </Grid>
       )}
@@ -118,7 +120,7 @@ const HFamiliar: React.FC<HFamiliarProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="historicoSaudeParentes"
           fullWidth
-          disabled={false}
+          disabled={disable}
           multiline
         />
       </Grid>

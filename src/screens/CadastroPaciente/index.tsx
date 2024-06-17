@@ -61,7 +61,6 @@ const CadastroPaciente: React.FC = () => {
       case 3:
         return (
           <HFamiliarContainer
-            handleNext={handleNext} 
             handleBack={handleBack}
             activeStep={activeStep}
             idPaciente={idPaciente as string}

@@ -12,7 +12,6 @@ interface HFisiologicaProps {
 
 const HFisiologica: React.FC<HFisiologicaProps> = ({ fprops, disable }) => {
   const classes = useStyles();
-  console.log(fprops)
 
   return (
     <Grid container spacing={2}>

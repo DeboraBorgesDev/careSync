@@ -13,6 +13,21 @@ export interface Hfisiologica {
   paciente: Paciente;
 }
 
+export interface HFamiliarType {
+  id: string;
+  idadeMortePai: number ;
+  causaMortePai: string;
+  idadeMorteMae: number;
+  causaMorteMae: string;
+  doencasMae: string;
+  doencasPai: string;
+  filhosSaudaveis: boolean;
+  filhosObservacoes: string;
+  historicoSaudeParentes: string;
+  paciente: Paciente;
+}
+
+
 export function newPaciente(data: FormValues): Promise<any> {
     return authApi.request({
       method: 'post',
@@ -36,6 +51,15 @@ export function newPaciente(data: FormValues): Promise<any> {
       data,
     }).then(response => response.data);
   }
+
+  export function editHFamiliar(data: HFamiliarValues, id: string): Promise<any> {
+    return authApi.request({
+      method: 'put',
+      url: `historia-familiar/${id}`,
+      data,
+    }).then(response => response.data);
+  }
+
 
 
 export function newHFisiologica(data: HfisiologicaValues): Promise<any> {

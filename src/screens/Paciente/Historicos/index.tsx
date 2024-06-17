@@ -6,14 +6,16 @@ import InformacoesPessoaisContainer from '../../../componenets/forms/paciente/in
 import { useOutletContext } from 'react-router-dom';
 import { Paciente } from '../../PacientesList';
 import HFisiologicaContainer from '../../../componenets/forms/paciente/HFisiologica/container';
-import { Hfisiologica } from '../../../services/paciente';
+import { HFamiliarType, Hfisiologica } from '../../../services/paciente';
+import HFamiliarContainer from '../../../componenets/forms/paciente/HFamiliar/container';
 
 
 const HistoricosPage: React.FC = () => {
     const [currentTab, setCurrentTab] = useState(0);
-    const {paciente, historiaFisiologica} = useOutletContext<{
+    const {paciente, historiaFisiologica, historiaFamiliar} = useOutletContext<{
       paciente: Paciente;
       historiaFisiologica: Hfisiologica;
+      historiaFamiliar: HFamiliarType;
     }>();
 
     const items = [
@@ -38,14 +40,13 @@ const HistoricosPage: React.FC = () => {
           {
             label: 'História Familiar',
             icon: <Groups />,
-            content: <InformacoesPessoaisContainer/>,
+            content: <HFamiliarContainer hFamiliar={historiaFamiliar} />,
           },
         
       ];
 
   return (
     <Grid container>
-      <h1>Dashboard</h1>
       <Grid item xs={12}>
       <TabsPanel
           items={items}

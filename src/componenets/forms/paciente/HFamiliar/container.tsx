@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
-import HFamiliar from '.';
 import { Button } from '@mui/material';
 import useStyles from './styles';
-import { newHFamiliar } from '../../../../services/paciente';
+import { HFamiliarType, editHFamiliar, newHFamiliar } from '../../../../services/paciente';
 import { validationSchema } from './schema';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import HFamiliar from '.';
 
 
 export interface HFamiliarValues {
@@ -23,30 +23,40 @@ export interface HFamiliarValues {
 }
 
 interface HFamiliarContainerProps {
-  handleNext: () => void;
-  activeStep: number;
-  handleBack: () => void;
-  idPaciente: string
+  activeStep?: number;
+  handleBack?: () => void;
+  idPaciente?: string;
+  hFamiliar?: HFamiliarType;
 }
 
 const HFamiliarContainer: React.FC<HFamiliarContainerProps> = (
   {
-    handleNext,
     activeStep,
     handleBack,
-    idPaciente
+    idPaciente,
+    hFamiliar = null
   }
 ) => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const isEdit = hFamiliar !== null;
+  const [disable, setDisable] = useState(isEdit)
+
+
 
   const handleSubmit = async (values: HFamiliarValues, { setSubmitting }: FormikHelpers<HFamiliarValues>) => {
     try {
-      await newHFamiliar(values);
-      navigate('/paciente/lista');
+      if(isEdit){
+        await editHFamiliar(values, hFamiliar.id);
+        setDisable(true);
+      }else {
+        await newHFamiliar(values);
+        navigate('/paciente/lista');
+      }
+      
     } catch (error) {
       //@ts-ignore
-      toast.error(error.response.data as string)
+      toast.error(error.message)
     } finally {
       setSubmitting(false); 
     }
@@ -55,16 +65,17 @@ const HFamiliarContainer: React.FC<HFamiliarContainerProps> = (
   return (
     <Formik<HFamiliarValues>
       initialValues={{
-        pacienteId: idPaciente,
-        idadeMortePai: 0,
-        causaMortePai: '',
-        idadeMorteMae: 0,
-        causaMorteMae: '',
-        doencasMae: '',
-        doencasPai: '',
-        filhosSaudaveis: true,
-        filhosObservacoes: '',
-        historicoSaudeParentes: '',
+        //@ts-ignore
+        pacienteId: hFamiliar?.paciente?.id || idPaciente,
+        idadeMortePai: hFamiliar?.idadeMortePai || 0,
+        causaMortePai: hFamiliar?.causaMortePai || '',
+        idadeMorteMae: hFamiliar?.idadeMorteMae || 0,
+        causaMorteMae: hFamiliar?.causaMortePai ||'',
+        doencasMae: hFamiliar?.doencasMae ||'',
+        doencasPai: hFamiliar?.doencasPai || '',
+        filhosSaudaveis: hFamiliar?.filhosSaudaveis || true,
+        filhosObservacoes: hFamiliar?.filhosObservacoes ||'',
+        historicoSaudeParentes: hFamiliar?.historicoSaudeParentes ||'',
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -72,25 +83,48 @@ const HFamiliarContainer: React.FC<HFamiliarContainerProps> = (
       {(fprops: FormikProps<HFamiliarValues>) => {
         return (
           <>
-            <HFamiliar fprops={fprops} />
+            <HFamiliar fprops={fprops} disable={disable} />
             <div className={classes.buttons}>
+              {isEdit ? (
+                <>
                 <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
+                  disabled={!disable}
+                  onClick={(prev) => setDisable(!prev)}
                   style={{ marginRight: 10 }}
                 >
-                  Voltar
+                  Editar
                 </Button>
                 <Button
                   variant="contained"
                   color="primary"
                   type="submit" 
                   onClick={fprops.submitForm}
-                  disabled={!fprops.isValid}
+                  disabled={disable}
                 >
-                  {activeStep === 3 ? 'Finalizar' : 'Próximo'}
+                  Salvar
                 </Button>
-              </div>
+                </>
+              ) : (
+                <>
+                   <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                style={{ marginRight: 10 }}
+              >
+                Voltar
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit" 
+                onClick={fprops.submitForm}
+                disabled={!fprops.isValid}
+              >
+                {activeStep === 3 ? 'Finalizar' : 'Próximo'}
+              </Button>
+                </>
+              )}
+            </div>
           </>
         )
       }}
