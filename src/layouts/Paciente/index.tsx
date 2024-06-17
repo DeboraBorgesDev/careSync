@@ -56,7 +56,7 @@ const PacienteLayout = () => {
     },
     {
       label: 'Históricos',
-      link: '/pacientes/historicos',
+      link: `/paciente/${id}/historicos`,
       icon: <ContentPaste />,
     },
     {

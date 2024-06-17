@@ -22,10 +22,10 @@ export interface FormValues {
   
 
   interface InformacoesPessoaisContainerProps {
-    handleNext: () => void;
-    activeStep: number;
-    handleBack: () => void;
-    setIdPaciente: (id: string) => void
+    handleNext?: () => void;
+    activeStep?: number;
+    handleBack?: () => void;
+    setIdPaciente?: (id: string) => void
 
   }
   const InformacoesPessoaisContainer: React.FC<InformacoesPessoaisContainerProps> = ({
@@ -40,8 +40,12 @@ export interface FormValues {
     const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
       try {
         const paciente = await newPaciente(values);
-        setIdPaciente(paciente.id)
-        handleNext();
+        if(setIdPaciente){
+          setIdPaciente(paciente.id)
+        }
+        if(handleNext){
+          handleNext();
+        }
       } catch (error) {
         //@ts-ignore
         toast.error(error.response.data as string)
