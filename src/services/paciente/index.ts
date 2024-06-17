@@ -48,3 +48,26 @@ export function getAllPacientes(): Promise<Paciente[]> {
   }).then(response => response.data);
 }
 
+export function getPacienteById(id: string | undefined): Promise<Paciente> {
+  return authApi.request({
+    method: 'get',
+    url: `pacientes/${id}`,
+  }).then(response => response.data);
+}
+
+export function getHFisiologicaById(id: string | undefined): Promise<Paciente> {
+  return authApi.request({
+    method: 'get',
+    url: `historia-fisiologica/${id}`,
+  }).then(response => response.data);
+}
+
+export function getHFamiliarById(id: string | undefined): Promise<Paciente> {
+  return authApi.request({
+    method: 'get',
+    url: `historia-familiar/${id}`,
+  }).then(response => response.data);
+}
+
+
+

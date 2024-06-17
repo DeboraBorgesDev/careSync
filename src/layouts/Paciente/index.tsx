@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect } from 'react';
 import {
   Box,
   CssBaseline,
@@ -28,6 +28,8 @@ import logo from '../../media/logo/Group 1.png';
 import classNames from 'classnames';
 import CircularLoader from '../../componenets/CircularLoader';
 import { Assessment } from '@material-ui/icons';
+import { Paciente } from '../../screens/PacientesList';
+import { getHFamiliarById, getHFisiologicaById, getPacienteById } from '../../services/paciente';
 
 const PacienteLayout = () => {
   const classes = useStyles();
@@ -35,6 +37,10 @@ const PacienteLayout = () => {
   const { pathname } = useLocation();
   const { id } = useParams<{ id: string }>();
   const [open, setOpen] = useState(false);
+  const [paciente, setPaciente] = useState<Paciente | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [historiaFisiologica, setHistoriaFisiologica] = useState<any>(null); // Ajuste o tipo de acordo com a estrutura da resposta
+  const [historiaFamiliar, setHistoriaFamiliar] = useState<any>(null);
 
   const CustomLink = React.forwardRef<HTMLAnchorElement, any>((linkProps, ref) => (
     <Link role="button" {...linkProps} ref={ref} />
@@ -78,6 +84,52 @@ const PacienteLayout = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+
+  const fetchPaciente = async () => {
+    try {
+      const response = await getPacienteById(id);
+      setPaciente(response); 
+    } catch (error) {
+      console.error('Erro ao buscar paciente:', error);
+    }
+  };
+
+  const fetchHistoriaFisiologica = async () => {
+    try {
+      const response = await getHFisiologicaById(id);
+      setHistoriaFisiologica(response);
+    } catch (error) {
+      console.error('Erro ao buscar história fisiológica:', error);
+    }
+  };
+
+  const fetchHistoriaFamiliar = async () => {
+    try {
+      const response = await getHFamiliarById(id);
+      setHistoriaFamiliar(response); 
+    } catch (error) {
+      console.error('Erro ao buscar história familiar:', error);
+    }
+  };
+
+  useEffect(() => {
+   if(id){
+    setLoading(true)
+    Promise.all([
+      fetchPaciente(),
+      fetchHistoriaFisiologica(),
+      fetchHistoriaFamiliar(),
+    ])
+      .catch((error) => {
+        console.error('Erro ao buscar dados:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+   }
+  }, [id]);
+
 
   return (
     <Box className={classes.root}>
@@ -131,7 +183,14 @@ const PacienteLayout = () => {
             </div>
           }
         >
-          <Outlet />
+          <Outlet
+            context={{
+              paciente,
+              historiaFamiliar,
+              historiaFisiologica,
+              loading
+             }}
+            />
         </Suspense>
       </main>
     </Box>
