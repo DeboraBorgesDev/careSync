@@ -1,5 +1,6 @@
 
 import { authApi } from "..";
+import { InternacaoValues } from "../../componenets/forms/internacao/container";
 import { Paciente } from "../../screens/PacientesList";
 import { User } from "../login/types";
 
@@ -15,8 +16,6 @@ export interface Internacao {
 }
 
 
-
-
 export function getAllInternacoes(): Promise<Internacao[]> {
   return authApi.request({
     method: 'get',
@@ -24,5 +23,19 @@ export function getAllInternacoes(): Promise<Internacao[]> {
   }).then(response => response.data);
 }
 
+export function newInternacao(data: InternacaoValues): Promise<any> {
+  return authApi.request({
+    method: 'post',
+    url: 'internacao',
+    data,
+  }).then(response => response.data);
+}
 
+export function editInternacao(data: InternacaoValues, id: string): Promise<any> {
+  return authApi.request({
+    method: 'put',
+    url: `internacao/${id}`,
+    data,
+  }).then(response => response.data);
+}
 
