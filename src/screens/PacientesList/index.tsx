@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, IconButton, Tooltip } from '@mui/material';
 import { getAllPacientes } from '../../services/paciente';
 import Datatable from '../../componenets/Datatable';
+import { Visibility } from '@material-ui/icons';
 
 export interface Paciente {
   id: string;
@@ -20,16 +21,30 @@ const PacientesListPage: React.FC = () => {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const actions = (paciente: Paciente) => (
+      <Tooltip title='Ver paciente'>
+        <IconButton
+          color="primary"
+          aria-label="Ver paciente"
+          onClick={() => {}}
+        >
+          <Visibility />
+        </IconButton>
+      </Tooltip>
+  );
+
   const columns = [
     { name: 'nome', label: 'Nome' },
     { name: 'dataNascimento', label: 'Data de Nascimento' },
     { name: 'cpf', label: 'CPF' },
-    { name: 'sexo', label: 'Sexo' },
-    { name: 'estadoCivil', label: 'Estado Civil' },
-    { name: 'possuiFilhos', label: 'Possui Filhos' },
-    { name: 'profissao', label: 'Profissão' },
-    { name: 'religiao', label: 'Religião' },
-    { name: 'nivelEnsino', label: 'Nível de Ensino' },
+    { 
+      name: 'actions',
+      label:'Ações',
+      options: {
+        customBodyRender: (value: Paciente) => actions(value),
+
+      },
+    }
   ];
 
 

@@ -2,14 +2,14 @@
 import { MuiThemeProvider, createTheme } from '@material-ui/core';
 import React from 'react';
 import LinearLoader from '../LinearLoader';
-import MUIDataTable, { MUIDataTableColumnDef, MUIDataTableOptions } from 'mui-datatables';
+import MUIDataTable, { MUIDataTableColumn, MUIDataTableColumnOptions, MUIDataTableOptions } from 'mui-datatables';
 import muiTheme from './styles';
-
-
+import { columnOptionsDefault, optionsDefault } from './options';
 
 interface Column {
   name: string;
   label: string;
+  options?: MUIDataTableColumnOptions;
 }
 
 interface DatatableProps {
@@ -28,16 +28,25 @@ const Datatable: React.FC<DatatableProps> = (props) => {
     columns,
     loading = false,
     color = 'primary',
+    options,
   } = props;
 
   const theme = createTheme(muiTheme(createTheme(), color));
 
-  const datatableColumns: MUIDataTableColumnDef[] = columns.map((column) => ({
+  const datatableColumns: MUIDataTableColumn[] = columns.map((column) => ({
     name: column.name,
     label: column.label,
+    options: {
+      ...columnOptionsDefault(column),
+      ...column.options,
+    },
   }));
 
-
+  const datatableOptions: MUIDataTableOptions = {
+    ...optionsDefault(),
+    ...options,
+    rowsPerPageOptions: [5, 10, 20, 50, 100, 200],
+  };
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -45,6 +54,7 @@ const Datatable: React.FC<DatatableProps> = (props) => {
         title={title}
         data={data}
         columns={datatableColumns}
+        options={datatableOptions}
       />
       <LinearLoader visible={loading} loading={loading} color={color || 'primary'} />
     </MuiThemeProvider>
