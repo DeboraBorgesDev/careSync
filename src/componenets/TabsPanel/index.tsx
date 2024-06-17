@@ -55,8 +55,6 @@ const TabsPanel: React.FC<TabsPanelProps> = ({
     [classes.root]: true,
     [classes[orientation]]: orientation,
      //@ts-ignore
-    [classes[`${backgroundColor}Background`]]: backgroundColor,
-     //@ts-ignore
     [classes[textColor]]: textColor,
   });
 
@@ -69,8 +67,7 @@ const TabsPanel: React.FC<TabsPanelProps> = ({
     <Paper elevation={3} className={paperClasses}>
       <AppBar
         position="static"
-        //@ts-ignore
-        color={backgroundColor} 
+        style={{backgroundColor: '#19e1af'}}
         className={classes[`${orientation}AppBar`]}
       >
         <Tabs
@@ -80,6 +77,7 @@ const TabsPanel: React.FC<TabsPanelProps> = ({
           aria-label="Tabs"
           variant="scrollable"
           classes={{ indicator: indicatorClasses }}
+          indicatorColor='primary'
         >
           {items.map((item, index) => (
             <Tab

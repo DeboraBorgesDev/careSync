@@ -41,7 +41,7 @@ const HistoricosPage: React.FC = () => {
           withIcons
           orientation="horizontal"
           textColor="white"
-          backgroundColor="secondary"
+          backgroundColor="primary"
           currentTab={currentTab}
           setCurrentTab={setCurrentTab}
         />
