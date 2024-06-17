@@ -18,20 +18,22 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   Dashboard,
-  Favorite,
-  Group,
+  ContentPaste,
+  Article,
 } from '@mui/icons-material';
 import { useStyles } from './styles';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import logo from '../../media/logo/Group 1.png';
 import classNames from 'classnames';
 import CircularLoader from '../../componenets/CircularLoader';
+import { Assessment } from '@material-ui/icons';
 
 const PacienteLayout = () => {
   const classes = useStyles();
   const theme = useTheme();
   const { pathname } = useLocation();
+  const { id } = useParams<{ id: string }>();
   const [open, setOpen] = useState(false);
 
   const CustomLink = React.forwardRef<HTMLAnchorElement, any>((linkProps, ref) => (
@@ -49,23 +51,23 @@ const PacienteLayout = () => {
   const drawerItems = [
     {
       label: 'Dashboard',
-      link: '/paciente/dashboard',
+      link: `/paciente/${id}/dashboard`,
       icon: <Dashboard />,
     },
     {
       label: 'Históricos',
       link: '/pacientes/historicos',
-      icon: <Favorite />,
+      icon: <ContentPaste />,
     },
     {
       label: 'Internações',
       link: '/paciente/internações',
-      icon: <Group />,
+      icon: <Article />,
     },
     {
       label: 'Sinais Vitais',
       link: '/paciente/sinais',
-      icon: <Group />,
+      icon: <Assessment />,
     },
   ];
 

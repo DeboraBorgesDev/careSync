@@ -3,7 +3,7 @@ import CadastroPaciente from "../screens/CadastroPaciente";
 import PacientesListPage from "../screens/PacientesList";
 import HomePage from "../screens/home";
 
-export const privateRoutes = [
+export const homeRoutes = [
     {
         path: '/',
         element: <HomeLayout />,

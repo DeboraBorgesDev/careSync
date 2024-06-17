@@ -3,6 +3,7 @@ import { Grid, IconButton, Tooltip } from '@mui/material';
 import { getAllPacientes } from '../../services/paciente';
 import Datatable from '../../componenets/Datatable';
 import { Visibility } from '@material-ui/icons';
+import { useNavigate } from 'react-router-dom';
 
 export interface Paciente {
   id: string;
@@ -18,15 +19,21 @@ export interface Paciente {
 }
 
 const PacientesListPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const handleViewPaciente = (id: string) => {
+    navigate(`/paciente/${id}/dashboard`);
+  };
 
   const actions = (paciente: Paciente) => (
       <Tooltip title='Ver paciente'>
         <IconButton
           color="primary"
           aria-label="Ver paciente"
-          onClick={() => {}}
+          onClick={() => handleViewPaciente(paciente.id)}
         >
           <Visibility />
         </IconButton>
@@ -46,6 +53,15 @@ const PacientesListPage: React.FC = () => {
       },
     }
   ];
+
+  const pacientesData = pacientes
+  ? pacientes.map((paciente) => [
+    paciente.nome,
+    paciente.dataNascimento,
+    paciente.cpf,
+    paciente,
+  ])
+  : [];
 
 
   useEffect(() => {
@@ -69,7 +85,7 @@ const PacientesListPage: React.FC = () => {
       <Grid item xs={12}>
         <Datatable
             title="Lista de Pacientes"
-            data={pacientes}
+            data={pacientesData}
             columns={columns}
             loading={loading}
             color="primary"

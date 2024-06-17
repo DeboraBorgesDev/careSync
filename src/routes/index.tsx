@@ -1,12 +1,13 @@
 
 import { useRoutes } from 'react-router-dom';
 import { commonRoutes } from './commonRoutes';
-import { privateRoutes } from './privateRoutes';
+import { homeRoutes } from './homeRoutes';
+import { pacienteRoutes } from './pacienteRoutes';
 
 const Routes = () => {
 
 
-  const routes = [...privateRoutes, ...commonRoutes];
+  const routes = [...homeRoutes, ...commonRoutes, ...pacienteRoutes];
 
   const element = useRoutes(routes);
 
