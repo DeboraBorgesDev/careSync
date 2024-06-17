@@ -60,7 +60,7 @@ export interface FormValues {
         
       } catch (error) {
         //@ts-ignore
-        toast.error(error.response.data as string)
+        toast.error(error.message)
       } finally {
         setSubmitting(false); 
       }

@@ -7,10 +7,12 @@ import { HfisiologicaValues } from './container';
 
 interface HFisiologicaProps {
   fprops: FormikProps<HfisiologicaValues>;
+  disable: boolean;
 }
 
-const HFisiologica: React.FC<HFisiologicaProps> = ({ fprops }) => {
+const HFisiologica: React.FC<HFisiologicaProps> = ({ fprops, disable }) => {
   const classes = useStyles();
+  console.log(fprops)
 
   return (
     <Grid container spacing={2}>
@@ -21,7 +23,7 @@ const HFisiologica: React.FC<HFisiologicaProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="metodoParto"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12} sm={12}>
@@ -31,7 +33,7 @@ const HFisiologica: React.FC<HFisiologicaProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="experienciaParto"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
       <Grid item xs={12} sm={12}>
@@ -41,7 +43,7 @@ const HFisiologica: React.FC<HFisiologicaProps> = ({ fprops }) => {
           fprops={fprops}
           fkey="saudeInfancia"
           fullWidth
-          disabled={false}
+          disabled={disable}
         />
       </Grid>
     </Grid>

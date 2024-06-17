@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import useStyles from './styles';
 import HFisiologica from '.';
 import { Button } from '@mui/material';
-import { newHFisiologica } from '../../../../services/paciente';
+import { Hfisiologica, editHFisiologica, newHFisiologica } from '../../../../services/paciente';
 import { hfisiologicaValidationSchema } from './schema';
+import { toast } from 'react-toastify';
 
 export interface HfisiologicaValues {
   metodoParto: string;
@@ -14,10 +15,11 @@ export interface HfisiologicaValues {
 }
 
 interface HFisiologicaContainerProps {
-  handleNext: () => void;
-  activeStep: number;
-  handleBack: () => void;
-  idPaciente: string
+  handleNext?: () => void;
+  activeStep?: number;
+  handleBack?: () => void;
+  idPaciente?: string;
+  hFisiologica?: Hfisiologica;
 }
 
 const HFisiologicaContainer: React.FC<HFisiologicaContainerProps> = (
@@ -25,55 +27,91 @@ const HFisiologicaContainer: React.FC<HFisiologicaContainerProps> = (
     handleNext,
     activeStep,
     handleBack,
-    idPaciente
+    idPaciente,
+    hFisiologica = null,
   }
 ) => {
   const classes = useStyles();
+  const isEdit = hFisiologica !== null;
+  const [disable, setDisable] = useState(isEdit);
 
-  const handleSubmit = async (values: HfisiologicaValues, { setSubmitting }: FormikHelpers<HfisiologicaValues>) => {
+  const handleSubmitHfisiologica = async (
+    values: HfisiologicaValues, 
+    { setSubmitting }: FormikHelpers<HfisiologicaValues>
+  ) => {
     try {
-      await newHFisiologica(values);
-      handleNext();
+      if (isEdit) {
+        await editHFisiologica(values, hFisiologica.experienciaParto as string);
+        setDisable(true);
+      } else {
+        await newHFisiologica(values);
+        if (handleNext) {
+          handleNext();
+        }
+      }
     } catch (error) {
-      //@ts-ignore
-      toast.error(error.response.data as string)
+      // @ts-ignore
+      toast.error(error.message);
     } finally {
-      setSubmitting(false); 
+      setSubmitting(false);
     }
   };
 
   return (
     <Formik<HfisiologicaValues>
       initialValues={{
-        metodoParto: '',
-        experienciaParto: '',
-        saudeInfancia: '',
-        pacienteId: idPaciente,
+        metodoParto: hFisiologica?.metodoParto || '',
+        experienciaParto: hFisiologica?.experienciaParto || '',
+        saudeInfancia: hFisiologica?.saudeInfancia || '',
+        pacienteId: hFisiologica?.paciente.id || idPaciente as string ,
       }}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmitHfisiologica}
       validationSchema={hfisiologicaValidationSchema}
     >
       {(fprops: FormikProps<HfisiologicaValues>) => (
         <>
-          <HFisiologica fprops={fprops} />
+          <HFisiologica fprops={fprops} disable={disable} />
           <div className={classes.buttons}>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                style={{ marginRight: 10 }}
-              >
-                Voltar
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit" 
-                onClick={fprops.submitForm}
-                disabled={!fprops.isValid}
-              >
-                {activeStep === 3 ? 'Finalizar' : 'Próximo'}
-              </Button>
-            </div>
+            {isEdit ? (
+              <>
+                <Button
+                  disabled={!disable}
+                  onClick={() => setDisable(false)}
+                  style={{ marginRight: 10 }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit" 
+                  onClick={fprops.submitForm}
+                  disabled={disable}
+                >
+                  Salvar
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  style={{ marginRight: 10 }}
+                >
+                  Voltar
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit" 
+                  onClick={fprops.submitForm}
+                  disabled={!fprops.isValid}
+                >
+                  {activeStep === 3 ? 'Finalizar' : 'Próximo'}
+                </Button>
+              </>
+            )}
+          </div>
         </>
       )}
     </Formik>

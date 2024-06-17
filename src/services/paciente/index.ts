@@ -5,6 +5,13 @@ import { HPatologicoValues } from "../../componenets/forms/paciente/HPatologico/
 import { FormValues } from "../../componenets/forms/paciente/informacoes/container";
 import { Paciente } from "../../screens/PacientesList";
 
+export interface Hfisiologica {
+  id?: string;
+  metodoParto: string;
+  experienciaParto: string;
+  saudeInfancia: string;
+  paciente: Paciente;
+}
 
 export function newPaciente(data: FormValues): Promise<any> {
     return authApi.request({
@@ -18,6 +25,14 @@ export function newPaciente(data: FormValues): Promise<any> {
     return authApi.request({
       method: 'put',
       url: `pacientes/${id}`,
+      data,
+    }).then(response => response.data);
+  }
+
+  export function editHFisiologica(data: HfisiologicaValues, id: string): Promise<any> {
+    return authApi.request({
+      method: 'put',
+      url: `historia-fisiologica/${id}`,
       data,
     }).then(response => response.data);
   }
