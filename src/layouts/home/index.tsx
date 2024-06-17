@@ -22,7 +22,6 @@ import {
   Person,
   Add,
   Search,
-  LocalHospital,
   MonitorHeart,
   Favorite,
   Group,
@@ -42,7 +41,6 @@ const HomeLayout = () => {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [isOpenPacienteMenu, setIsOpenPacienteMenu] = useState(false);
-  const [isOpenInternacoesMenu, setIsOpenInternacoesMenu] = useState(false);
 
   const CustomLink = React.forwardRef<HTMLAnchorElement, any>((linkProps, ref) => (
     <Link role="button" {...linkProps} ref={ref} />
@@ -67,10 +65,6 @@ const HomeLayout = () => {
 
   const handlePacienteMenu = () => {
     setIsOpenPacienteMenu((prev) => !prev);
-  };
-
-  const handleInternacoesMenu = () => {
-    setIsOpenInternacoesMenu((prev) => !prev);
   };
 
 
@@ -100,21 +94,8 @@ const HomeLayout = () => {
     },
     {
       label: 'Internações',
-      icon: <LocalHospital />,
-      onClick: handleInternacoesMenu,
-      open: isOpenInternacoesMenu,
-      nestedItems: [
-        {
-          label: 'Nova internação',
-          link: '/internacoes/nova',
-          icon: <Add />,
-        },
-        {
-          label: 'Acompanhar paciente',
-          link: '/internacoes/acompanhar',
-          icon: <MonitorHeart />,
-        },
-      ],
+      link: '/internacoes',
+      icon: <MonitorHeart />,
     },
     {
       label: 'Registrar Sinais Vitais',

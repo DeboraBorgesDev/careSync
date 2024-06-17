@@ -5,7 +5,7 @@ export type Login =  {
 
 export interface User {
     id: number;
-    name: string;
+    nome: string;
     email: string;
     token: string;
   }

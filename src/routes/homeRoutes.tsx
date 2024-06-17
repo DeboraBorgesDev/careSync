@@ -1,5 +1,6 @@
 import HomeLayout from "../layouts/home";
 import CadastroPaciente from "../screens/CadastroPaciente";
+import InternacoesListPage from "../screens/InternacoesList";
 import PacientesListPage from "../screens/PacientesList";
 import HomePage from "../screens/home";
 
@@ -24,6 +25,12 @@ export const homeRoutes = [
                 path: 'paciente/lista',
                 element: (
                   <PacientesListPage/>
+                ),
+              },
+              {
+                path: 'internacoes',
+                element: (
+                  <InternacoesListPage/>
                 ),
               },
         ]
