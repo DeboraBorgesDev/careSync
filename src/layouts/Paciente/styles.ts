@@ -108,4 +108,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: theme.palette.action.selected,
     },
   },
+  // '& .MuiListItemButton': {
+  //   backgroundColor: theme.palette.primary.main,
+  // }
 }));

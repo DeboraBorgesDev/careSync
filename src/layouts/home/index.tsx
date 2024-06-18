@@ -37,15 +37,14 @@ import { useStyles } from './styles';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import logo from '../../media/logo/Group 1.png';
-import classNames from 'classnames';
-import CircularLoader from '../../componenets/CircularLoader';
 import { useAuth } from '../../hooks/auth';
+import CircularLoader from '../../componenets/CircularLoader';
 
 const HomeLayout = () => {
   const classes = useStyles();
   const theme = useTheme();
   const { pathname } = useLocation();
-  const {logout} = useAuth();
+  const { logout } = useAuth();
   const [open, setOpen] = useState(false);
   const [isOpenPacienteMenu, setIsOpenPacienteMenu] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -53,23 +52,6 @@ const HomeLayout = () => {
   const CustomLink = React.forwardRef<HTMLAnchorElement, any>((linkProps, ref) => (
     <Link role="button" {...linkProps} ref={ref} />
   ));
-
-  const itemDrawer = classNames({
-    [classes.borderColor]: false,
-  });
-
-  const itemDrawerActive = classNames({
-    [classes.borderColor]: true,
-  });
-
-  const itemNested = classNames({
-    [classes.nestedItem]: true,
-  });
-
-  const itemNestedActive = classNames({
-    [classes.nestedItem]: true,
-    [classes.borderColor]: true,
-  });
 
   const handlePacienteMenu = () => {
     setIsOpenPacienteMenu((prev) => !prev);
@@ -83,7 +65,7 @@ const HomeLayout = () => {
     setOpen(false);
   };
 
-  const handleOpenUserMenu = (event: any) => {
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     //@ts-ignore
     setAnchorElUser(event.currentTarget);
   };
@@ -152,14 +134,11 @@ const HomeLayout = () => {
           </div>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 0 }}>
-              <IconButton 
-              onClick={handleOpenUserMenu}
-              aria-label="open drawer"
-               >
-                <Avatar>
-                  <AccountCircle />
-                </Avatar>
-              </IconButton>
+            <IconButton onClick={handleOpenUserMenu} aria-label="open drawer">
+              <Avatar>
+                <AccountCircle />
+              </Avatar>
+            </IconButton>
 
             <Menu
               sx={{ mt: '45px' }}
@@ -198,7 +177,7 @@ const HomeLayout = () => {
                 component={item.link ? CustomLink : 'div'}
                 to={item.link ? item.link : undefined}
                 onClick={item.onClick || undefined}
-                className={item.link === pathname ? itemDrawerActive : itemDrawer}
+                className={pathname.includes(item?.link as string) ? classes.listItemActive : classes.listItem}
               >
                 <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
                 <Hidden smDown implementation="css">
@@ -214,7 +193,7 @@ const HomeLayout = () => {
                         key={nestedItem.label}
                         component={CustomLink}
                         to={nestedItem.link}
-                        className={nestedItem.link === pathname ? itemNestedActive : itemNested}
+                        className={pathname.includes(nestedItem.link) ? classes.listItemActive : classes.listItem}
                       >
                         <ListItemIcon>{nestedItem.icon}</ListItemIcon>
                         <ListItemText primary={nestedItem.label} />

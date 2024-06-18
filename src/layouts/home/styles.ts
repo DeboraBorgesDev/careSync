@@ -103,9 +103,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   listItemActive: {
-    backgroundColor: theme.palette.action.selected,
+    backgroundColor: theme.palette.primary.main,
     '&:hover': {
-      backgroundColor: theme.palette.action.selected,
+      backgroundColor: theme.palette.primary.main,
     },
   },
+  '& .MuiListItemButton': {
+    backgroundColor: theme.palette.primary.main,
+  }
 }));
