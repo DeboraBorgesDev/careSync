@@ -12,7 +12,7 @@ const Content: React.FC = () => {
   }>();
 
   const calcularIdade = (): number => {
-    const diff = Date.now() - new Date(paciente.dataNascimento).getTime();
+    const diff = Date.now() - new Date(paciente?.dataNascimento).getTime();
     const idadeDate = new Date(diff);
     return Math.abs(idadeDate.getUTCFullYear() - 1970);
   };
@@ -31,16 +31,16 @@ const Content: React.FC = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography>
-                  <strong>Nome:</strong> {paciente.nome}
+                  <strong>Nome:</strong> {paciente?.nome}
                 </Typography>
                 <Typography>
                   <strong>Idade:</strong> {calcularIdade()} anos
                 </Typography>
                 <Typography>
-                  <strong>Sexo:</strong> {paciente.sexo === 'f' ? 'Feminino' : 'Masculino'}
+                  <strong>Sexo:</strong> {paciente?.sexo === 'f' ? 'Feminino' : 'Masculino'}
                 </Typography>
                 <Typography>
-                  <strong>CPF:</strong> {paciente.cpf}
+                  <strong>CPF:</strong> {paciente?.cpf}
                 </Typography>
               </Grid>
             </Grid>

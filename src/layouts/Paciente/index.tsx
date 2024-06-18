@@ -20,6 +20,7 @@ import {
   Dashboard,
   ContentPaste,
   Article,
+  ArrowBack,
 } from '@mui/icons-material';
 import { useStyles } from './styles';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
@@ -55,6 +56,11 @@ const PacienteLayout = () => {
   });
 
   const drawerItems = [
+    {
+      label: 'Voltar para Home',
+      link: `/`,
+      icon: <ArrowBack />,
+    },
     {
       label: 'Dashboard',
       link: `/paciente/${id}/dashboard`,
