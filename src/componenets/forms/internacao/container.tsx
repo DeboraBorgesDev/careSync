@@ -34,7 +34,6 @@ const InternacaoContainer: React.FC<InternacaoContainerProps> = (
 ) => {
   const classes = useStyles();
   const isEdit = internacao !== null;
-  const [disable, setDisable] = useState(isEdit);
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [medicos, setMedicos] = useState<User[]>()
   const [loading, setLoading] = useState(false)
@@ -46,7 +45,6 @@ const InternacaoContainer: React.FC<InternacaoContainerProps> = (
     try {
       if (isEdit) {
         await editInternacao(values, internacao.id as string);
-        setDisable(true);
       } else {
         await newInternacao(values);
         toast.success('Internação criada com sucesso');
@@ -101,7 +99,7 @@ const InternacaoContainer: React.FC<InternacaoContainerProps> = (
     >
       {(fprops: FormikProps<InternacaoValues>) => (
         <>
-          <InternacaoForm fprops={fprops} disable={disable} pacientes={pacientes} medicos={medicos as User[]} />
+          <InternacaoForm fprops={fprops} disable={false} pacientes={pacientes} medicos={medicos as User[]} />
           <div className={classes.buttons}>
                 <Button
                   onClick={onClose}
