@@ -13,6 +13,10 @@ import {
   ListItemText,
   Collapse,
   Hidden,
+  Avatar,
+  Menu,
+  MenuItem,
+  Typography,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -27,6 +31,7 @@ import {
   Group,
   ExpandLess,
   ExpandMore,
+  AccountCircle,
 } from '@mui/icons-material';
 import { useStyles } from './styles';
 import { Link, Outlet, useLocation } from 'react-router-dom';
@@ -34,13 +39,16 @@ import { useTheme } from '@mui/material/styles';
 import logo from '../../media/logo/Group 1.png';
 import classNames from 'classnames';
 import CircularLoader from '../../componenets/CircularLoader';
+import { useAuth } from '../../hooks/auth';
 
 const HomeLayout = () => {
   const classes = useStyles();
   const theme = useTheme();
   const { pathname } = useLocation();
+  const {logout} = useAuth();
   const [open, setOpen] = useState(false);
   const [isOpenPacienteMenu, setIsOpenPacienteMenu] = useState(false);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const CustomLink = React.forwardRef<HTMLAnchorElement, any>((linkProps, ref) => (
     <Link role="button" {...linkProps} ref={ref} />
@@ -67,6 +75,22 @@ const HomeLayout = () => {
     setIsOpenPacienteMenu((prev) => !prev);
   };
 
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpenUserMenu = (event: any) => {
+    //@ts-ignore
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const drawerItems = [
     {
@@ -109,15 +133,6 @@ const HomeLayout = () => {
     },
   ];
 
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   return (
     <Box className={classes.root}>
       <CssBaseline />
@@ -135,6 +150,38 @@ const HomeLayout = () => {
           <div className={classes.logoContainer}>
             <img src={logo} className={classes.logo} alt="Logo" />
           </div>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 0 }}>
+              <IconButton 
+              onClick={handleOpenUserMenu}
+              aria-label="open drawer"
+               >
+                <Avatar>
+                  <AccountCircle />
+                </Avatar>
+              </IconButton>
+
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              <MenuItem onClick={logout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}>
@@ -145,47 +192,40 @@ const HomeLayout = () => {
         </div>
         <Divider />
         <List>
-  {drawerItems.map((item) => (
-    <div key={item.label}>
-      <ListItemButton
-        component={item.link ? CustomLink : 'div'}
-        to={item.link ? item.link : undefined}
-        onClick={item.onClick || undefined}
-        className={
-          item.link === pathname ? itemDrawerActive : itemDrawer
-        }
-      >
-        <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
-        <Hidden smDown implementation="css">
-          <ListItemText primary={item.label} />
-        </Hidden>
-        {item.nestedItems && (item.open ? <ExpandLess /> : <ExpandMore />)}
-      </ListItemButton>
-      {item.nestedItems && (
-        <Collapse in={item.open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {item.nestedItems.map((nestedItem) => (
+          {drawerItems.map((item) => (
+            <div key={item.label}>
               <ListItemButton
-                key={nestedItem.label}
-                component={CustomLink}
-                to={nestedItem.link}
-                className={
-                  nestedItem.link === pathname
-                    ? itemNestedActive
-                    : itemNested
-                }
+                component={item.link ? CustomLink : 'div'}
+                to={item.link ? item.link : undefined}
+                onClick={item.onClick || undefined}
+                className={item.link === pathname ? itemDrawerActive : itemDrawer}
               >
-                <ListItemIcon>{nestedItem.icon}</ListItemIcon>
-                <ListItemText primary={nestedItem.label} />
+                <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
+                <Hidden smDown implementation="css">
+                  <ListItemText primary={item.label} />
+                </Hidden>
+                {item.nestedItems && (item.open ? <ExpandLess /> : <ExpandMore />)}
               </ListItemButton>
-            ))}
-          </List>
-        </Collapse>
-      )}
-    </div>
-  ))}
-</List>
-
+              {item.nestedItems && (
+                <Collapse in={item.open} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {item.nestedItems.map((nestedItem) => (
+                      <ListItemButton
+                        key={nestedItem.label}
+                        component={CustomLink}
+                        to={nestedItem.link}
+                        className={nestedItem.link === pathname ? itemNestedActive : itemNested}
+                      >
+                        <ListItemIcon>{nestedItem.icon}</ListItemIcon>
+                        <ListItemText primary={nestedItem.label} />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              )}
+            </div>
+          ))}
+        </List>
       </Drawer>
       <main className={`${classes.content} ${open ? 'open' : ''}`}>
         <div className={classes.drawerHeader} />

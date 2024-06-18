@@ -12,6 +12,10 @@ import {
   ListItemIcon,
   ListItemText,
   Hidden,
+  MenuItem,
+  Typography,
+  Menu,
+  Avatar,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -21,6 +25,7 @@ import {
   ContentPaste,
   Article,
   ArrowBack,
+  AccountCircle,
 } from '@mui/icons-material';
 import { useStyles } from './styles';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
@@ -31,17 +36,21 @@ import CircularLoader from '../../componenets/CircularLoader';
 import { Assessment } from '@material-ui/icons';
 import { Paciente } from '../../screens/PacientesList';
 import { getHFamiliarById, getHFisiologicaById, getPacienteById } from '../../services/paciente';
+import { useAuth } from '../../hooks/auth';
 
 const PacienteLayout = () => {
   const classes = useStyles();
   const theme = useTheme();
   const { pathname } = useLocation();
+  const {logout} = useAuth();
   const { id } = useParams<{ id: string }>();
   const [open, setOpen] = useState(false);
   const [paciente, setPaciente] = useState<Paciente | null>(null);
   const [loading, setLoading] = useState(true);
-  const [historiaFisiologica, setHistoriaFisiologica] = useState<any>(null); // Ajuste o tipo de acordo com a estrutura da resposta
+  const [historiaFisiologica, setHistoriaFisiologica] = useState<any>(null);
   const [historiaFamiliar, setHistoriaFamiliar] = useState<any>(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
 
   const CustomLink = React.forwardRef<HTMLAnchorElement, any>((linkProps, ref) => (
     <Link role="button" {...linkProps} ref={ref} />
@@ -89,6 +98,15 @@ const PacienteLayout = () => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleOpenUserMenu = (event: any) => {
+    //@ts-ignore
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
 
 
@@ -141,7 +159,7 @@ const PacienteLayout = () => {
     <Box className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={`${classes.appBar} ${open ? 'open' : ''}`}>
-        <Toolbar className={classes.toolbar}>
+      <Toolbar className={classes.toolbar}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -154,6 +172,38 @@ const PacienteLayout = () => {
           <div className={classes.logoContainer}>
             <img src={logo} className={classes.logo} alt="Logo" />
           </div>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 0 }}>
+              <IconButton 
+              onClick={handleOpenUserMenu}
+              aria-label="open drawer"
+               >
+                <Avatar>
+                  <AccountCircle />
+                </Avatar>
+              </IconButton>
+
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              <MenuItem onClick={logout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}>

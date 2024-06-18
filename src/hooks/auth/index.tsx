@@ -70,6 +70,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    navigate('/login');
   };
 
   return (
