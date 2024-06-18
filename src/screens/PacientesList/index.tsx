@@ -4,6 +4,7 @@ import { getAllPacientes } from '../../services/paciente';
 import Datatable from '../../componenets/Datatable';
 import { Visibility } from '@material-ui/icons';
 import { useNavigate } from 'react-router-dom';
+import { formatDate } from '../../utils/date';
 
 export interface Paciente {
   id: string;
@@ -56,9 +57,9 @@ const PacientesListPage: React.FC = () => {
   ];
 
   const pacientesData = pacientes
-  ? pacientes.map((paciente) => [
+  ? pacientes.map((paciente: Paciente) => [
     paciente.nome,
-    paciente.dataNascimento,
+    formatDate(paciente.dataNascimento, 'dd/MM/yyyy'),
     paciente.cpf,
     paciente,
   ])
