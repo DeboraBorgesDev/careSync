@@ -9,6 +9,7 @@ import { Paciente } from '../../../screens/PacientesList';
 import InternacaoForm from '.';
 import { User } from '../../../services/login/types';
 import { getAllUsuarios } from '../../../services/usuario';
+import validationSchema from './validationSchema';
 
 export type InternacaoValues = {
     idPaciente: string | null;
@@ -96,7 +97,7 @@ const InternacaoContainer: React.FC<InternacaoContainerProps> = (
         idMedico: internacao?.medico?.id || null,
       }}
       onSubmit={handleSubmit}
-    //   validationSchema={hfisiologicaValidationSchema}
+      validationSchema={validationSchema}
     >
       {(fprops: FormikProps<InternacaoValues>) => (
         <>

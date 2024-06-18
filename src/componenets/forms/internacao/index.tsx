@@ -1,5 +1,5 @@
 import React from 'react';
-import { Autocomplete, Grid, TextField } from '@mui/material';
+import { Autocomplete, Grid, TextField, FormHelperText } from '@mui/material';
 import { FormikProps } from 'formik'; 
 import useStyles from './styles';
 import { InternacaoValues } from './container';
@@ -28,13 +28,18 @@ const InternacaoForm: React.FC<InternacaoFormProps> = ({ fprops, disable, pacien
               value={pacientes.find(p => p.id === fprops.values.idPaciente) || null}
               onChange={(event, value) => fprops.setFieldValue('idPaciente', value ? value.id : null)}
               renderInput={(params) => (
-                <TextField 
-                  {...params} 
-                  label="Paciente" 
-                  variant="standard" 
-                  disabled={disable} 
-                  fullWidth 
-                />
+                <>
+                  <TextField 
+                    {...params} 
+                    label="Paciente" 
+                    variant="standard" 
+                    disabled={disable} 
+                    fullWidth 
+                  />
+                  {fprops.errors.idPaciente && (
+                    <FormHelperText error>{fprops.errors.idPaciente}</FormHelperText>
+                  )}
+                </>
               )}
             />
           </Grid>
@@ -45,13 +50,18 @@ const InternacaoForm: React.FC<InternacaoFormProps> = ({ fprops, disable, pacien
               value={medicos.find(m => m.id === fprops.values.idMedico) || null}
               onChange={(event, value) => fprops.setFieldValue('idMedico', value ? value.id : null)}
               renderInput={(params) => (
-                <TextField 
-                  {...params} 
-                  label="Médico" 
-                  variant="standard" 
-                  disabled={disable} 
-                  fullWidth 
-                />
+                <>
+                  <TextField 
+                    {...params} 
+                    label="Médico" 
+                    variant="standard" 
+                    disabled={disable} 
+                    fullWidth 
+                  />
+                  {fprops.errors.idMedico && (
+                    <FormHelperText error>{fprops.errors.idMedico}</FormHelperText>
+                  )}
+                </>
               )}
             />
           </Grid>
@@ -76,6 +86,9 @@ const InternacaoForm: React.FC<InternacaoFormProps> = ({ fprops, disable, pacien
           fullWidth
           disabled={disable}
         />
+        {fprops.errors.diagnostico && (
+          <FormHelperText error>{fprops.errors.diagnostico}</FormHelperText>
+        )}
       </Grid>
       <Grid item xs={8} sm={12}>
         <TextInput
@@ -86,6 +99,9 @@ const InternacaoForm: React.FC<InternacaoFormProps> = ({ fprops, disable, pacien
           fullWidth
           disabled={disable}
         />
+        {fprops.errors.observacoes && (
+          <FormHelperText error>{fprops.errors.observacoes}</FormHelperText>
+        )}
       </Grid>
     </Grid>
   );
