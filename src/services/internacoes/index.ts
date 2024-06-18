@@ -30,6 +30,13 @@ export function getAllInternacoesByPaciente(id: string): Promise<Internacao[]> {
   }).then(response => response.data);
 }
 
+export function darAlta(id: string): Promise<Internacao[]> {
+  return authApi.request({
+    method: 'put',
+    url: `internacao/dar-alta/${id}`,
+  }).then(response => response.data);
+}
+
 export function newInternacao(data: InternacaoValues): Promise<any> {
   return authApi.request({
     method: 'post',

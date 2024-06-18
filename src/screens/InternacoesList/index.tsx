@@ -6,6 +6,7 @@ import { Edit, Visibility } from '@mui/icons-material';
 import Datatable from '../../componenets/Datatable';
 import InternacaoContainer from '../../componenets/forms/internacao/container';
 import InternacaoDetailsModal from '../../componenets/InternacaoDetailsModal';
+import DarAltaModal from '../../componenets/DarAltaModal';
 
 
 const InternacoesListPage: React.FC = () => {
@@ -14,6 +15,7 @@ const InternacoesListPage: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [selectedInternacao, setSelectedInternacao] = useState<Internacao | null>(null);
+  const [openAltaModal, setOpenAltaModal] = useState<boolean>(false);
 
   const columns = [
     { name: 'paciente', label: 'Paciente' },
@@ -63,6 +65,15 @@ const InternacoesListPage: React.FC = () => {
     setOpen(true);
   };
 
+  const handleOpenALtaModal = (internacao: Internacao | null) => {
+    setSelectedInternacao(internacao || null);
+    setOpenAltaModal(true);
+  };
+
+  const handleCloseALtaModal = () => {
+    setOpenAltaModal(false)
+  }
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -98,7 +109,11 @@ const InternacoesListPage: React.FC = () => {
         </IconButton>
       </Tooltip>
       {!internacao?.dataSaida && (
-        <Button variant='outlined' color='primary'>
+        <Button 
+          variant='outlined'
+          color='primary'
+          onClick={() => handleOpenALtaModal(internacao)}
+        >
           Dar alta
         </Button>
       )}
@@ -139,6 +154,12 @@ const InternacoesListPage: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <DarAltaModal 
+        selectedInternacao={selectedInternacao as Internacao} 
+        open={openAltaModal} 
+        close={handleCloseALtaModal}
+        fetchInternacoes={fetchInternacoes}
+      />
     </Grid>
   );
 };
