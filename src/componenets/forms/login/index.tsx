@@ -3,27 +3,25 @@ import { Button, Card, Grid, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/auth';
 import useStyles from './styles';
+import { toast } from 'react-toastify';
 
 const LoginForm = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // Estados para armazenar o email e a senha
+ 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      // Chama a função de login com o email e senha
       await login({ email, senha });
-      // Se o login for bem-sucedido, redireciona para a página inicial
       navigate('/');
     } catch (error) {
-      // Se houver um erro no login, define a mensagem de erro
       console.error('Erro no login:', error);
-      // Você pode tratar o erro aqui de acordo com sua lógica
+      toast.error('Usuário ou senha incorretos')
     }
   };
 
