@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import AppThemeProvider from './providers/theme';
-import { AuthProvider } from './hooks/auth';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,9 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AppThemeProvider>
-      <AuthProvider>
         <App />
-      </AuthProvider>
     </AppThemeProvider>
   </React.StrictMode>
 );

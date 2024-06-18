@@ -1,7 +1,9 @@
-import React, { useContext, useState, useEffect, ReactNode } from 'react';
+import React, {useState, useEffect, ReactNode, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Login, User } from '../../services/login/types';
-import { apiLogin } from '../../services/login';
+import { apiLogin, validateToken } from '../../services/login';
 import AuthContext from './authContext';
+import { toast } from 'react-toastify';
 
 export interface AuthContextType {
   user: User | null;
@@ -17,15 +19,38 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     const savedToken = localStorage.getItem('token');
-    if (savedUser && savedToken) {
-      setUser(JSON.parse(savedUser));
-      setToken(savedToken);
-    }
-  }, []);
+
+    const checkTokenValidity = async () => {
+      try {
+        if (savedUser && savedToken) {
+          const isValid = await validateToken(savedToken);
+          if (isValid) {
+            setUser(JSON.parse(savedUser));
+            setToken(savedToken);
+          } else {
+            logout();
+            navigate('/login');
+          }
+        } else {
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Error during token validation:', error);
+        //@ts-ignore
+        toast.error(error.response.data);
+        
+        logout();
+        navigate('/login');
+      }
+    };
+
+    checkTokenValidity();
+  }, [navigate]);
 
   const login = async (credentials: Login) => {
     try {
@@ -53,6 +78,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     </AuthContext.Provider>
   );
 };
+
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
