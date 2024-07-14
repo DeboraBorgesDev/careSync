@@ -4,9 +4,8 @@ import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import useStyles from './styles';
 import UsuarioForm from '.';
-import validationSchema from './validationSchema';
 import { Usuario } from '../../../services/login/types';
-import { Permissao } from '../../../services/usuario';
+import { createUsuario, editUsuario, Permissao } from '../../../services/usuario';
 
 export type UsuarioValues = {
   nome: string;
@@ -45,21 +44,24 @@ const UsuarioContainer: React.FC<UsuarioContainerProps> = (
     values: UsuarioValues, 
     { setSubmitting }: FormikHelpers<UsuarioValues>
   ) => {
-    // try {
-    //   if (isEdit) {
-    //     await editUsuario(values, internacao.id as string);
-    //   } else {
-    //     await newUsuario(values);
-    //     toast.success('Internação criada com sucesso');
-    //   }
-    //   fetchInternacoes()
-    //   onClose()
-    // } catch (error) {
-    //   // @ts-ignore
-    //   toast.error(error.response.data);
-    // } finally {
-    //   setSubmitting(false);
-    // }
+    try {
+      setLoading(true)
+      if (isEdit) {
+        await editUsuario(values, usuario.id as string);
+        toast.success('Usuário criada com sucesso');
+      } else {
+        await createUsuario(values);
+        toast.success('Usuário criado com sucesso');
+      }
+      fetchUsuarios()
+      onClose()
+    } catch (error) {
+      // @ts-ignore
+      toast.error(error.response.data);
+    } finally {
+      setSubmitting(false);
+      setLoading(false)
+    }
   };
 
   return (
@@ -94,7 +96,7 @@ const UsuarioContainer: React.FC<UsuarioContainerProps> = (
               color="primary"
               type="submit" 
               onClick={fprops.submitForm}
-              disabled={!fprops.isValid}
+              disabled={!fprops.isValid || loading}
             >
               Salvar
             </Button>
