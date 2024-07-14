@@ -1,7 +1,7 @@
 import { authApi } from "..";
-import { User } from "../login/types";
+import { Usuario } from "../login/types";
 
-export function getAllUsuarios(): Promise<User[]> {
+export function getAllUsuarios(): Promise<Usuario[]> {
     return authApi.request({
       method: 'get',
       url: 'usuarios',

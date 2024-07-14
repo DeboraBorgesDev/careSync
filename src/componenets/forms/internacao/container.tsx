@@ -7,7 +7,7 @@ import useStyles from './styles';
 import { getAllPacientes } from '../../../services/paciente';
 import { Paciente } from '../../../screens/PacientesList';
 import InternacaoForm from '.';
-import { User } from '../../../services/login/types';
+import { Usuario } from '../../../services/login/types';
 import { getAllUsuarios } from '../../../services/usuario';
 import validationSchema from './validationSchema';
 
@@ -35,7 +35,7 @@ const InternacaoContainer: React.FC<InternacaoContainerProps> = (
   const classes = useStyles();
   const isEdit = internacao !== null;
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
-  const [medicos, setMedicos] = useState<User[]>()
+  const [medicos, setMedicos] = useState<Usuario[]>()
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (
@@ -99,7 +99,7 @@ const InternacaoContainer: React.FC<InternacaoContainerProps> = (
     >
       {(fprops: FormikProps<InternacaoValues>) => (
         <>
-          <InternacaoForm fprops={fprops} disable={false} pacientes={pacientes} medicos={medicos as User[]} />
+          <InternacaoForm fprops={fprops} disable={false} pacientes={pacientes} medicos={medicos as Usuario[]} />
           <div className={classes.buttons}>
                 <Button
                   onClick={onClose}

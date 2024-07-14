@@ -3,6 +3,7 @@ import CadastroPaciente from "../screens/CadastroPaciente";
 import InternacoesListPage from "../screens/InternacoesList";
 import PacientesListPage from "../screens/PacientesList";
 import HomePage from "../screens/home";
+import UsuariosPage from "../screens/usuarios";
 
 export const homeRoutes = [
     {
@@ -31,6 +32,12 @@ export const homeRoutes = [
                 path: 'internacoes',
                 element: (
                   <InternacoesListPage/>
+                ),
+              },
+              {
+                path: 'usuarios',
+                element: (
+                  <UsuariosPage/>
                 ),
               },
         ]

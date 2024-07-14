@@ -110,7 +110,7 @@ const HomeLayout = () => {
     },
     {
       label: 'Usuários',
-      link: '/usuario',
+      link: '/usuarios',
       icon: <Group />,
     },
   ];

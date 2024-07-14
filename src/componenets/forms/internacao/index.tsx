@@ -5,13 +5,13 @@ import useStyles from './styles';
 import { InternacaoValues } from './container';
 import TextInput from '../../inputs/text-input';
 import { Paciente } from '../../../screens/PacientesList';
-import { User } from '../../../services/login/types';
+import { Usuario } from '../../../services/login/types';
 
 interface InternacaoFormProps {
   fprops: FormikProps<InternacaoValues>;
   disable: boolean;
   pacientes: Paciente[];
-  medicos: User[];
+  medicos: Usuario[];
 }
 
 const InternacaoForm: React.FC<InternacaoFormProps> = ({ fprops, disable, pacientes, medicos }) => {
@@ -46,7 +46,7 @@ const InternacaoForm: React.FC<InternacaoFormProps> = ({ fprops, disable, pacien
           <Grid item xs={8} sm={12}>
             <Autocomplete
               options={medicos}
-              getOptionLabel={(option: User) => option.nome}
+              getOptionLabel={(option: Usuario) => option.nome}
               value={medicos.find(m => m.id === fprops.values.idMedico) || null}
               onChange={(event, value) => fprops.setFieldValue('idMedico', value ? value.id : null)}
               renderInput={(params) => (
