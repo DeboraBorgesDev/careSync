@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dialog, DialogTitle, Grid } from '@mui/material';
+import { Button, Dialog, DialogTitle, Grid, IconButton, Tooltip } from '@mui/material';
 import { getAllPermissoes, getAllUsuarios } from '../../services/usuario';
 import { Permissao, Usuario } from '../../services/login/types';
 import Datatable from '../../componenets/Datatable';
 import { useStyles } from './style';
 import UsuarioContainer from '../../componenets/forms/usuario/container';
+import { Edit } from '@mui/icons-material';
 
 const UsuariosPage: React.FC = () => {
   const classes = useStyles();
@@ -49,11 +50,32 @@ const UsuariosPage: React.FC = () => {
     }
   };
 
+  const actions = (usuario: Usuario) => (
+    <>
+      <Tooltip title='Editar' style={{marginRight: '5px'}}>
+        <IconButton
+          color="primary"
+          aria-label="Editar"
+          onClick={() => handleOpenModalCadastro(usuario)}
+        >
+          <Edit />
+        </IconButton>
+      </Tooltip>
+    </>
+  );
+
   const columns = [
     { name: 'nome', label: 'Nome' },
     { name: 'email', label: 'Email'},
     { name: 'cpf', label: 'CPF' },
-    { name: 'cargo', label:'Cargo'}
+    { name: 'cargo', label:'Cargo'},
+    { 
+      name: 'actions',
+      label:'Ações',
+      options: {
+        customBodyRender: (value: Usuario) => actions(value),
+      },
+    }
   ];
 
   const usuariosData = usuarios
@@ -61,7 +83,8 @@ const UsuariosPage: React.FC = () => {
         usuario?.nome,
         usuario?.username,
         usuario?.cpf,
-        usuario?.permissao?.nome || ''
+        usuario?.permissao?.nome || '',
+        usuario
       ])
     : [];
 

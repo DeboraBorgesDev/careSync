@@ -41,29 +41,37 @@ const UsuarioContainer: React.FC<UsuarioContainerProps> = (
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (
-    values: UsuarioValues, 
+    values: UsuarioValues,
     { setSubmitting }: FormikHelpers<UsuarioValues>
   ) => {
     try {
-      setLoading(true)
+      setLoading(true);
       if (isEdit) {
         await editUsuario(values, usuario.id as string);
-        toast.success('Usuário criada com sucesso');
+        toast.success('Usuário atualizado com sucesso');
       } else {
         await createUsuario(values);
         toast.success('Usuário criado com sucesso');
       }
-      fetchUsuarios()
-      onClose()
+      fetchUsuarios();
+      onClose();
     } catch (error) {
-      // @ts-ignore
-      toast.error(error.response.data);
+      const { 
+         //@ts-ignore
+        response
+       } = error;
+      if (response && response.data && response.data.errors) {
+        const errorMessages = response.data.errors.join(', ');
+        toast.error(`Erro ao processar a requisição: ${errorMessages}`);
+      } else {
+        toast.error('Erro ao processar a requisição. Tente novamente mais tarde.');
+      }
     } finally {
       setSubmitting(false);
-      setLoading(false)
+      setLoading(false);
     }
   };
-
+  
   return (
     <Formik<UsuarioValues>
       initialValues={{
