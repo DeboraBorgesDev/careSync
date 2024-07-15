@@ -10,8 +10,8 @@ export function apiLogin(data: Login): Promise<User> {
     }).then(response => response.data);
   }
 
-export function validateToken(token: string): Promise<User> {
-    return api.request<User>({
+export function validateToken(token: string): Promise<string> {
+    return api.request<string>({
       method: 'get',
       url: `auth/validate?token=${token}`,
     }).then(response => response.data);

@@ -77,7 +77,7 @@ const HomeLayout = () => {
   const drawerItems = [
     {
       label: 'Dashboard',
-      link: '/dashboard',
+      link: '/',
       icon: <Dashboard />,
     },
     {

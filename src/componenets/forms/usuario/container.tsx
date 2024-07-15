@@ -6,6 +6,7 @@ import useStyles from './styles';
 import UsuarioForm from '.';
 import { Usuario } from '../../../services/login/types';
 import { createUsuario, editUsuario, Permissao } from '../../../services/usuario';
+import { formatCPF } from '../../../utils/cpf';
 
 export type UsuarioValues = {
   nome: string;
@@ -46,11 +47,16 @@ const UsuarioContainer: React.FC<UsuarioContainerProps> = (
   ) => {
     try {
       setLoading(true);
+      const cleanedValues = {
+        ...values,
+        cpf: formatCPF(values.cpf), 
+      };
+  
       if (isEdit) {
-        await editUsuario(values, usuario.id as string);
+        await editUsuario(cleanedValues, usuario.id as string);
         toast.success('Usuário atualizado com sucesso');
       } else {
-        await createUsuario(values);
+        await createUsuario(cleanedValues);
         toast.success('Usuário criado com sucesso');
       }
       fetchUsuarios();
