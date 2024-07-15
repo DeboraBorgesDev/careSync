@@ -4,7 +4,8 @@ import { HfisiologicaValues } from "../../componenets/forms/paciente/HFisiologic
 import { HPatologicoValues } from "../../componenets/forms/paciente/HPatologico/container";
 import { FormValues } from "../../componenets/forms/paciente/informacoes/container";
 import { SinaisValues } from "../../componenets/forms/sinais/container";
-import { Paciente } from "../../screens/PacientesList";
+import {  Paciente } from "../../screens/PacientesList";
+import { Usuario } from "../login/types";
 
 export interface Hfisiologica {
   id?: string;
@@ -28,6 +29,23 @@ export interface HFamiliarType {
   paciente: Paciente;
 }
 
+export interface Registro {
+  id: string;
+  paciente: Paciente;
+  profissional: Usuario;
+  dataHora: string;
+  freqCardiaca: number;
+  freqRespiratoria: number;
+  pressaoArterial: string;
+  constipacao: string;
+  glicemia: number;
+  temperatura: number;
+  oxigenacao: number;
+  peso: number;
+  mobilidade: string;
+  observacoes: string;
+}
+
 
 export function newPaciente(data: FormValues): Promise<any> {
     return authApi.request({
@@ -44,6 +62,14 @@ export function newPaciente(data: FormValues): Promise<any> {
       data,
     }).then(response => response.data);
   }
+
+  export function getRegistrosByPaciente(id: string): Promise<Registro[]> {
+    return authApi.request({
+      method: 'get',
+      url: `sinais/paciente/${id}`,
+    }).then(response => response.data);
+  }
+  
 
 
   export function editInformacoes(data: FormValues, id: string): Promise<any> {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { Autocomplete, Grid, TextField, Button, InputAdornment } from '@mui/material';
 import { FormikProps } from 'formik'; 
 import useStyles from './styles';
@@ -38,8 +38,6 @@ const SinaisForm: React.FC<SinaisFormProps> = (
       fprops.setFieldValue('idProfissional', user.id)
     }
   }, [user])
-
-  console.log(fprops)
 
 
   return (

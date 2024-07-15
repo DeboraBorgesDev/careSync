@@ -87,7 +87,7 @@ const PacienteLayout = () => {
     },
     {
       label: 'Sinais Vitais',
-      link: '/paciente/sinais',
+      link: `/paciente/${id}/sinais`,
       icon: <Assessment />,
     },
   ];

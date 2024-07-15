@@ -3,6 +3,7 @@ import PacienteLayout from "../layouts/Paciente";
 import DashboardPacientePage from "../screens/Paciente/Dashboard";
 import HistoricosPage from "../screens/Paciente/Historicos";
 import InternacoesPage from "../screens/Paciente/Internacoes";
+import SinaisPage from "../screens/Paciente/sinais";
 
 
 export const pacienteRoutes = [
@@ -27,7 +28,13 @@ export const pacienteRoutes = [
             element: (
               <InternacoesPage/>
             ),
-        },
+          },
+          {
+            path: 'sinais',
+            element: (
+              <SinaisPage/>
+            ),
+          },
         ]
     }
 ]
