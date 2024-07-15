@@ -91,7 +91,7 @@ const UsuarioContainer: React.FC<UsuarioContainerProps> = (
         coren: usuario?.coren || '',
         isEstudante: usuario?.estudante || false,
         matricula: usuario?.matricula || '',
-        permissao: usuario?.permissao.id || ''
+        permissao: usuario?.permissao?.id || ''
       }}
       onSubmit={handleSubmit}
     >

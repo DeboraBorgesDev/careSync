@@ -8,13 +8,10 @@ import image from '../../media/illustrations/ilustration-home.png';
 const HomePage: React.FC = () => {
   const [internacoes, setInternacoes] = useState<Internacao[] | null>(null);
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
+  const [internacoesAtivas, setInternacoesAtivas] = useState<number>(0);
+  const [numeroPacientes, setNumeroPacientes] = useState<number>(0);
+  const [altas, setAltas] = useState<number>(0);
   const [loading, setLoading] = useState(true);
-
-  //@ts-ignore
-  const internacoesAtivas = internacoes?.filter(internacao => internacao.dataSaida === null).length;
-  const numeroPacientes = pacientes.length;
-  //@ts-ignore
-  const altas = internacoes?.length - internacoesAtivas;
 
   const fetchInternacoes = async () => {
     try {
@@ -49,6 +46,17 @@ const HomePage: React.FC = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (internacoes) {
+      const activeInternacoes = internacoes.filter(internacao => internacao.dataSaida === null).length;
+      setInternacoesAtivas(activeInternacoes);
+      setAltas(internacoes.length - activeInternacoes);
+    }
+    if (pacientes) {
+      setNumeroPacientes(pacientes.length);
+    }
+  }, [internacoes, pacientes]);
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
