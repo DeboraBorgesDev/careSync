@@ -24,12 +24,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     const savedToken = localStorage.getItem('token');
+    console.log(savedToken)
 
     const checkTokenValidity = async () => {
       try {
         if (savedUser && savedToken) {
           const isValid = await validateToken(savedToken);
           if (isValid === 'Token válido') {
+            setUser(JSON.parse(savedUser))
             setToken(savedToken);
           } else {
             logout();

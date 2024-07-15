@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
-import { Autocomplete, Grid, TextField, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Autocomplete, Grid, TextField, Button, InputAdornment } from '@mui/material';
 import { FormikProps } from 'formik'; 
 import useStyles from './styles';
 import { SinaisValues } from './container';
 import { Paciente } from '../../../screens/PacientesList';
+import { useAuth } from '../../../hooks/auth';
 
 interface SinaisFormProps {
   fprops: FormikProps<SinaisValues>;
   disable: boolean;
   pacientes: Paciente[];
   onShow: (value: boolean) => void;
+  showSinaisInputs: boolean;
+  setShowSinaisInputs: (value: boolean) => void;
 }
 
-const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onShow }) => {
+const SinaisForm: React.FC<SinaisFormProps> = (
+  { 
+    fprops, 
+    disable, 
+    pacientes, 
+    onShow, 
+    showSinaisInputs,
+    setShowSinaisInputs
+  }) => {
   const classes = useStyles();
-  const [showSinaisInputs, setShowSinaisInputs] = useState(false);
+  const {user} = useAuth();
+
 
   const handleNextClick = () => {
     setShowSinaisInputs(true);
     onShow(true);
   };
+
+  useEffect(() => {
+    if(user){
+      fprops.setFieldValue('idProfissional', user.id)
+    }
+  }, [user])
+
+  console.log(fprops)
+
 
   return (
     <Grid container spacing={2} className={classes.form}>
@@ -60,7 +81,7 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
 
       {showSinaisInputs && (
         <>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               label="Frequência Cardíaca"
               variant="outlined"
@@ -73,10 +94,13 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
               error={Boolean(fprops.errors.freqCardiaca && fprops.touched.freqCardiaca)}
               helperText={fprops.errors.freqCardiaca && fprops.touched.freqCardiaca ? fprops.errors.freqCardiaca : ''}
               disabled={disable}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">bpm</InputAdornment>,
+              }}
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               label="Frequência Respiratória"
               variant="outlined"
@@ -89,10 +113,13 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
               error={Boolean(fprops.errors.freqRespiratoria && fprops.touched.freqRespiratoria)}
               helperText={fprops.errors.freqRespiratoria && fprops.touched.freqRespiratoria ? fprops.errors.freqRespiratoria : ''}
               disabled={disable}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">rpm</InputAdornment>,
+              }}
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               label="Pressão Arterial"
               variant="outlined"
@@ -104,10 +131,13 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
               error={Boolean(fprops.errors.pressaoArterial && fprops.touched.pressaoArterial)}
               helperText={fprops.errors.pressaoArterial && fprops.touched.pressaoArterial ? fprops.errors.pressaoArterial : ''}
               disabled={disable}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">mmHg</InputAdornment>,
+              }}
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               label="Constipação"
               variant="outlined"
@@ -122,7 +152,7 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               label="Glicemia"
               variant="outlined"
@@ -135,10 +165,13 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
               error={Boolean(fprops.errors.glicemia && fprops.touched.glicemia)}
               helperText={fprops.errors.glicemia && fprops.touched.glicemia ? fprops.errors.glicemia : ''}
               disabled={disable}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">mg/dL</InputAdornment>,
+              }}
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               label="Temperatura"
               variant="outlined"
@@ -151,10 +184,13 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
               error={Boolean(fprops.errors.temperatura && fprops.touched.temperatura)}
               helperText={fprops.errors.temperatura && fprops.touched.temperatura ? fprops.errors.temperatura : ''}
               disabled={disable}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">°C</InputAdornment>,
+              }}
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               label="Oxigenação"
               variant="outlined"
@@ -167,10 +203,13 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
               error={Boolean(fprops.errors.oxigenacao && fprops.touched.oxigenacao)}
               helperText={fprops.errors.oxigenacao && fprops.touched.oxigenacao ? fprops.errors.oxigenacao : ''}
               disabled={disable}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              }}
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <TextField
               label="Peso"
               variant="outlined"
@@ -183,14 +222,19 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
               error={Boolean(fprops.errors.peso && fprops.touched.peso)}
               helperText={fprops.errors.peso && fprops.touched.peso ? fprops.errors.peso : ''}
               disabled={disable}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+              }}
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <TextField
               label="Mobilidade"
               variant="outlined"
               fullWidth
+              multiline
+              rows={2}
               name="mobilidade"
               value={fprops.values.mobilidade}
               onChange={fprops.handleChange}
@@ -207,7 +251,7 @@ const SinaisForm: React.FC<SinaisFormProps> = ({ fprops, disable, pacientes, onS
               variant="outlined"
               fullWidth
               multiline
-              rows={4}
+              rows={2}
               name="observacoes"
               value={fprops.values.observacoes}
               onChange={fprops.handleChange}

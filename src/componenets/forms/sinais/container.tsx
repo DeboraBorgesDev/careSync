@@ -3,13 +3,10 @@ import { Formik, FormikHelpers, FormikProps } from 'formik';
 import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import useStyles from './styles';
-import { getAllPacientes } from '../../../services/paciente';
+import { getAllPacientes, newRegistro } from '../../../services/paciente';
 import { Paciente } from '../../../screens/PacientesList';
 import SinaisForm from '.';
-import { Usuario } from '../../../services/login/types';
-import { getAllUsuarios } from '../../../services/usuario';
 import validationSchema from './validationSchema';
-import { useAuth } from '../../../hooks/auth';
 
 export type SinaisValues = {
   idPaciente: string | null;
@@ -34,35 +31,39 @@ const SinaisContainer: React.FC<SinaisContainerProps> = ({
   registro = null,
 }) => {
   const classes = useStyles();
-  const {user} = useAuth();
-  const isEdit = registro !== null;
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [showButton, setShowButton] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [showSinaisInputs, setShowSinaisInputs] = useState(false);
+
 
   const handleSubmit = async (
     values: SinaisValues, 
-    { setSubmitting }: FormikHelpers<SinaisValues>
+    { setSubmitting, resetForm }: FormikHelpers<SinaisValues>
   ) => {
-    // try {
-    //   if (isEdit) {
-    //     await editSinais(values, registro?.idProfissional as string); // or use the appropriate id
-    //   } else {
-    //     await newSinais(values);
-    //     toast.success('Sinais vitais registrados com sucesso');
-    //   }
-    //   fetchInternacoes();
-    //   onClose();
-    // } catch (error) {
-    //   // @ts-ignore
-    //   toast.error(error.response.data);
-    // } finally {
-    //   setSubmitting(false);
-    // }
+    try {
+        await newRegistro(values);
+        toast.success('Sinais vitais registrados com sucesso');
+        resetForm();
+        setShowSinaisInputs(false)
+
+    } catch (error) {
+      const { 
+        //@ts-ignore
+       response
+      } = error;
+      if (response && response.data && response.data.errors) {
+        const errorMessages = response.data.errors.join(', ');
+        toast.error(`Erro ao registrar sinais: ${errorMessages}`);
+      } else {
+        toast.error('Erro ao registrar sinais. Tente novamente mais tarde.');
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
+
   useEffect(() => {
-    setLoading(true);
     getAllPacientes()
       .then((data) => {
         setPacientes(data);
@@ -76,7 +77,7 @@ const SinaisContainer: React.FC<SinaisContainerProps> = ({
     <Formik<SinaisValues>
       initialValues={{
         idPaciente: registro?.idPaciente || '',
-        idProfissional: registro?.idProfissional || user?.id as string,
+        idProfissional: registro?.idProfissional || '',
         freqCardiaca: registro?.freqCardiaca || 0,
         freqRespiratoria: registro?.freqRespiratoria || 0,
         pressaoArterial: registro?.pressaoArterial || '',
@@ -98,6 +99,8 @@ const SinaisContainer: React.FC<SinaisContainerProps> = ({
             disable={false}
             pacientes={pacientes}
             onShow={setShowButton}
+            showSinaisInputs={showSinaisInputs}
+            setShowSinaisInputs={setShowSinaisInputs}
            />
           {showButton && (
             <div className={classes.buttons}>
@@ -106,7 +109,6 @@ const SinaisContainer: React.FC<SinaisContainerProps> = ({
                 color="primary"
                 type="submit"
                 onClick={fprops.submitForm}
-                disabled={!fprops.isValid}
               >
                 Salvar
               </Button>

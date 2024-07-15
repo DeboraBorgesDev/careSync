@@ -5,7 +5,7 @@ const SinaisPage: React.FC = () => {
 
 
   return (
-    <Grid container spacing={2} justifyContent="center" alignItems="center">
+    <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12}>
         <h1>Resgistrar Sinais Vitais</h1>
       </Grid>

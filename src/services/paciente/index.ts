@@ -3,6 +3,7 @@ import { HFamiliarValues } from "../../componenets/forms/paciente/HFamiliar/cont
 import { HfisiologicaValues } from "../../componenets/forms/paciente/HFisiologica/container";
 import { HPatologicoValues } from "../../componenets/forms/paciente/HPatologico/container";
 import { FormValues } from "../../componenets/forms/paciente/informacoes/container";
+import { SinaisValues } from "../../componenets/forms/sinais/container";
 import { Paciente } from "../../screens/PacientesList";
 
 export interface Hfisiologica {
@@ -35,6 +36,15 @@ export function newPaciente(data: FormValues): Promise<any> {
       data,
     }).then(response => response.data);
   }
+
+  export function newRegistro(data: SinaisValues): Promise<any> {
+    return authApi.request({
+      method: 'post',
+      url: 'sinais/registrar',
+      data,
+    }).then(response => response.data);
+  }
+
 
   export function editInformacoes(data: FormValues, id: string): Promise<any> {
     return authApi.request({
