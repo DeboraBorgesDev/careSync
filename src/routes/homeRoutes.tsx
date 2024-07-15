@@ -3,6 +3,7 @@ import CadastroPaciente from "../screens/CadastroPaciente";
 import InternacoesListPage from "../screens/InternacoesList";
 import PacientesListPage from "../screens/PacientesList";
 import HomePage from "../screens/home";
+import SinaisPage from "../screens/registro-sinais";
 import UsuariosPage from "../screens/usuarios";
 
 export const homeRoutes = [
@@ -38,6 +39,12 @@ export const homeRoutes = [
                 path: 'usuarios',
                 element: (
                   <UsuariosPage/>
+                ),
+              },
+              {
+                path: 'registrar-sinais-vitais',
+                element: (
+                  <SinaisPage/>
                 ),
               },
         ]

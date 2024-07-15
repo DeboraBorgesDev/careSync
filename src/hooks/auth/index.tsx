@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (savedUser && savedToken) {
           const isValid = await validateToken(savedToken);
           if (isValid === 'Token válido') {
-            setUser(JSON.parse(savedUser));
             setToken(savedToken);
           } else {
             logout();
