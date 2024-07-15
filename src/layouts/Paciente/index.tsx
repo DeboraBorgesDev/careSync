@@ -16,6 +16,7 @@ import {
   Typography,
   Menu,
   Avatar,
+  Collapse,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -26,6 +27,9 @@ import {
   Article,
   ArrowBack,
   AccountCircle,
+  Favorite,
+  ExpandLess,
+  ExpandMore,
 } from '@mui/icons-material';
 import { useStyles } from './styles';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
@@ -49,12 +53,17 @@ const PacienteLayout = () => {
   const [loading, setLoading] = useState(true);
   const [historiaFisiologica, setHistoriaFisiologica] = useState<any>(null);
   const [historiaFamiliar, setHistoriaFamiliar] = useState<any>(null);
+  const [isOpenSinaisMenu, setIsOpenSinaisMenu] = useState<boolean>(false)
   const [anchorElUser, setAnchorElUser] = useState(null);
 
 
   const CustomLink = React.forwardRef<HTMLAnchorElement, any>((linkProps, ref) => (
     <Link role="button" {...linkProps} ref={ref} />
   ));
+
+  const handleSinaisMenu = () => {
+    setIsOpenSinaisMenu((prev) => !prev);
+  };
 
   const itemDrawer = classNames({
     [classes.borderColor]: false,
@@ -86,19 +95,24 @@ const PacienteLayout = () => {
       icon: <Article />,
     },
     {
-      label: 'Sinais Vitais',
-      link: `/paciente/${id}/sinais`,
-      icon: <Assessment />,
+      label: 'Sinais vitais',
+      icon: <Favorite />,
+      onClick: handleSinaisMenu,
+      open: isOpenSinaisMenu,
+      nestedItems: [
+        {
+          label: 'Gráficos',
+          link:  `/paciente/${id}/sinais/graficos`,
+          icon: <Assessment />,
+        },
+        {
+          label: 'Lista de registros',
+          link: `/paciente/${id}/sinais/lista`,
+          icon: <Article />,
+        },
+      ],
     },
   ];
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   const handleOpenUserMenu = (event: any) => {
     //@ts-ignore
@@ -107,6 +121,15 @@ const PacienteLayout = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
 
 
@@ -159,7 +182,7 @@ const PacienteLayout = () => {
     <Box className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={`${classes.appBar} ${open ? 'open' : ''}`}>
-      <Toolbar className={classes.toolbar}>
+        <Toolbar className={classes.toolbar}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -174,14 +197,11 @@ const PacienteLayout = () => {
           </div>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 0 }}>
-              <IconButton 
-              onClick={handleOpenUserMenu}
-              aria-label="open drawer"
-               >
-                <Avatar>
-                  <AccountCircle />
-                </Avatar>
-              </IconButton>
+            <IconButton onClick={handleOpenUserMenu} aria-label="open drawer">
+              <Avatar>
+                <AccountCircle />
+              </Avatar>
+            </IconButton>
 
             <Menu
               sx={{ mt: '45px' }}
@@ -219,13 +239,32 @@ const PacienteLayout = () => {
               <ListItemButton
                 component={item.link ? CustomLink : 'div'}
                 to={item.link ? item.link : undefined}
-                className={item.link === pathname ? itemDrawerActive : itemDrawer}
+                onClick={item.onClick || undefined}
+                className={pathname.includes(item?.link as string) ? classes.listItemActive : classes.listItem}
               >
                 <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
                 <Hidden smDown implementation="css">
                   <ListItemText primary={item.label} />
                 </Hidden>
+                {item.nestedItems && (item.open ? <ExpandLess /> : <ExpandMore />)}
               </ListItemButton>
+              {item.nestedItems && (
+                <Collapse in={item.open} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {item.nestedItems.map((nestedItem) => (
+                      <ListItemButton
+                        key={nestedItem.label}
+                        component={CustomLink}
+                        to={nestedItem.link}
+                        className={pathname.includes(nestedItem.link) ? classes.listItemActive : classes.listItem}
+                      >
+                        <ListItemIcon>{nestedItem.icon}</ListItemIcon>
+                        <ListItemText primary={nestedItem.label} />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              )}
             </div>
           ))}
         </List>
@@ -239,14 +278,14 @@ const PacienteLayout = () => {
             </div>
           }
         >
-          <Outlet
-            context={{
-              paciente,
-              historiaFamiliar,
-              historiaFisiologica,
-              loading
-             }}
-            />
+          <Outlet 
+          context={{
+            paciente,
+            loading,
+            historiaFamiliar,
+            historiaFisiologica,
+          }}
+           />
         </Suspense>
       </main>
     </Box>

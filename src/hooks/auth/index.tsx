@@ -24,7 +24,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     const savedToken = localStorage.getItem('token');
-    console.log(savedToken)
 
     const checkTokenValidity = async () => {
       try {

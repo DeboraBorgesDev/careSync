@@ -13,7 +13,6 @@ interface InformacoesPessoaisProps {
 
 const InformacoesPessoais: React.FC<InformacoesPessoaisProps> = ({ fprops, disable, isEdit }) => {
   const classes = useStyles();
-  console.log(fprops)
 
   return (
     <Grid container spacing={2}>

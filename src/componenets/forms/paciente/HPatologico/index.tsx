@@ -33,8 +33,6 @@ const HPatologico: React.FC<HPatologicoProps> = ({ fprops }) => {
     </FormControl>
   );
 
-  console.log(fprops.values)
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>

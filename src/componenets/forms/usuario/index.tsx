@@ -21,7 +21,6 @@ const UsuarioForm: React.FC<UsuarioFormProps> = ({ fprops, disable, permissoes }
   const isEnfermeiro = selectedPermissao?.nome === 'ENFERMEIRO';
   const isEstudante = selectedPermissao?.nome === 'ESTUDANTE';
 
-  console.log(fprops)
 
   useEffect(() => {
     fprops.setFieldValue('isEnfermeiro', isEnfermeiro)
@@ -29,7 +28,6 @@ const UsuarioForm: React.FC<UsuarioFormProps> = ({ fprops, disable, permissoes }
     fprops.setFieldValue('isEstudante', isEstudante)
   }, [selectedPermissao])
 
-  console.log(fprops.values)
 
   return (
     <Grid container spacing={2} className={classes.form}>
